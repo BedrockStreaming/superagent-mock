@@ -1,0 +1,17 @@
+{
+  env: {
+    node: true
+  },
+  rules: {
+    "no-console": 2,
+    "no-underscore-dangle": 0,
+    "no-use-before-define": [2, "nofunc"],
+    "max-len": [2, 150, 2],
+    "quotes": [2, "single"],
+    "space-after-keywords": [2, "always", { checkFunctionKeyword: true } ],
+    "no-multi-str": 0
+  },
+  "settings": {
+    "ecmascript": 6
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "name": "superagent-mock",
+  "description": "superagent plugin allowing to simulate HTTP calls by returning data fixtures based on the requested URL.",
+  "version": "1.0.0",
+  "keywords": [
+    "superagent",
+    "mock",
+    "isomorphic"
+  ],
+  "bugs": "https://github.com/M6Web/superagent-mock/issues",
+  "license": "MIT",
+  "main": "./lib/superagent-mock.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/M6Web/superagent-mock"
+  },
+  "dependencies": {
+    "qs": "^2.3.3",
+    "superagent": "^1.1.0"
+  },
+  "devDependencies": {
+    "component-as-module": "0.3.0",
+    "eslint": "0.12.0",
+    "nodeunit": "0.9.0"
+  },
+  "scripts": {
+    "test": "./node_modules/nodeunit/bin/nodeunit ./tests",
+    "lint": "./node_modules/eslint/bin/eslint.js ./lib"
+  }
+}
