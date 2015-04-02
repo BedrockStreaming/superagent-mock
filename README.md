@@ -5,6 +5,8 @@
 
 **Note**: This plugin is developed for `superagent: ^v1.1.0`.
 
+See [this post](http://tech.m6web.fr/how-did-we-mock-the-backend-developers.html) to know why we use superagent-mock at M6Web.
+
 ## Installation
 
 Install with [npm](http://npmjs.org/):
