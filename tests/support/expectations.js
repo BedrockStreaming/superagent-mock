@@ -1,5 +1,7 @@
 'use strict';
 
+var http = require('http');
+
 module.exports = function (request, config) {
   return {
 
@@ -94,6 +96,25 @@ module.exports = function (request, config) {
           .end(function (err, result) {
             test.ok(!err);
             test.equal(result, 'Real call done');
+            test.done();
+          });
+      },
+
+      'passing matched patterns to fixtures': function (test) {
+        var url = 'https://match.example/foo';
+        request.get(url)
+          .end(function (err, result) {
+            test.equal(result.data, 'foo');
+            test.done();
+          });
+      },
+
+      'catches error and response it': function (test) {
+        request.get('https://error.example/404')
+          .end(function (err, result) {
+            test.notEqual(err, null);
+            test.equal(err.status, 404);
+            test.equal(err.response, http.STATUS_CODES[404]);
             test.done();
           });
       }
