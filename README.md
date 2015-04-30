@@ -23,16 +23,42 @@ First, you have to define the URLs to mock in a configuration file:
 // ./superagent-mock-config.js file
 module.exports = [
   {
-    // regular expression of URL
+    /**
+     * regular expression of URL
+     */
     pattern: 'https://domain.example/(\\w+)/',
 
-    // callback that returns the data
-    fixtures: function () {
+    /**
+     * returns the data
+     *
+     * @param match array Result of the resolution of the regular expression
+     */
+    fixtures: function (match) {
+      /**
+       * example: 
+       *   request.get('https://error.example/404').end(function(err, res){
+       *     console.log(err); // 404
+       *   }) 
+       */ 
+      if (match[1] === '404') {
+        throw new Error(404);
+      }
+
+      /**
+       * example: 
+       *   request.get('https://error.example/200').end(function(err, res){
+       *     console.log(res.body); // "Data fixtures"
+       *   }) 
+       */
       return 'Data fixtures';
     },
 
-    // `match`: result of the resolution of the regular expression
-    // `data`: data returns by `fixtures` attribute
+    /**
+     * returns the result of the request
+     *
+     * @param match array Result of the resolution of the regular expression
+     * @param data  mixed Data returns by `fixtures` attribute
+     */
     callback: function (match, data) {
       return {
         body: data
@@ -51,73 +77,6 @@ var request = require('superagent');
 var config = require('./superagent-mock-config');
 
 require('superagent-mock')(request, config);
-```
-
-Also, You can pass matching data of the pattern attributes.
-
-```js
-// ./superagent-mock-config.js file
-module.exports = [
-  {
-    // regular expression of URL
-    pattern: 'https://domain.example/(\\w+)/',
-
-    // passes the matching data of finding 'https://domain.example/' followed by word characters. 
-    fixtures: function (match) {
-      // example: 
-      //   request.get('https://domain.example/foo').end(function(err, res){
-      //     console.log(res.body); // => 'foo'
-      //   }) 
-      //   
-      return match[1];
-    },
-
-    // `match`: result of the resolution of the regular expression
-    // `data`: data returns by `fixtures` attribute
-    callback: function (match, data) {
-      return {
-        body: data
-      };
-    }
-  },
-  ...
-];
-```
-
-If catches errors in fixtures function, the thrown object assigns first argument of the callback of the request.
-
-```js
-// ./superagent-mock-config.js file
-module.exports = [
-  {
-    // regular expression of URL
-    pattern: 'https://error.example/(\\w+)/',
-
-    // passes the matching data of finding 'https://domain.example/' followed by word characters. 
-    fixtures: function (match) {
-      // example: 
-      //   request.get('https://error.example/404').end(function(err, res){
-      //     // err is newErr;
-      //   }) 
-      //   
-    
-      var code = (match || [])[1] || 404;
-      var newErr = new Error(http.STATUS_CODES[code]);
-      newErr.response = http.STATUS_CODES[code];
-      newErr.status = code;
-      throw newErr;
-    },
-
-    // `match`: result of the resolution of the regular expression
-    // `data`: data returns by `fixtures` attribute
-    callback: function (match, data) {
-      return {
-        body: data
-      };
-    }
-  },
-  ...
-];
 ```
 
 ## Tests
