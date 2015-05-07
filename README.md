@@ -32,8 +32,9 @@ module.exports = [
      * returns the data
      *
      * @param match array Result of the resolution of the regular expression
+     * @param params object sent by 'send' function
      */
-    fixtures: function (match) {
+    fixtures: function (match, params) {
       /**
        * example: 
        *   request.get('https://error.example/404').end(function(err, res){
@@ -50,7 +51,18 @@ module.exports = [
        *     console.log(res.body); // "Data fixtures"
        *   }) 
        */
-      return 'Data fixtures';
+
+      /**
+       * example: 
+       *   request.get('https://domain.send.example/').send({superhero: "me"}).end(function(err, res){
+       *     console.log(res.body); // "Data fixtures - superhero:me"
+       *   }) 
+       */
+      if(params["superhero"]) {
+        return 'Data fixtures - superhero:' + params["superhero"];
+      } else {
+        return 'Data fixtures';
+      }
     },
 
     /**
