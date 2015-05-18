@@ -42,4 +42,13 @@ module.exports = [
     callback: function (match, data) {
       return {match: match, data: data};
     }
+  },
+  {
+    pattern: 'https://domain.send.example/(\\w+)',
+    fixtures: function (match, params) {
+      return 'Fixture ! - superhero:' + params.superhero;
+    },
+    callback: function (match, data) {
+      return {match: match, data: data};
+    }
   }];
