@@ -49,7 +49,7 @@ module.exports = [
        * example: 
        *   request.get('https://error.example/200').end(function(err, res){
        *     console.log(res.body); // "Data fixtures"
-       *   }) 
+       *   })
        */
 
       /**
@@ -90,6 +90,10 @@ var config = require('./superagent-mock-config');
 
 require('superagent-mock')(request, config);
 ```
+
+## Supported Methods
+
+GET and POST requests are mocked.
 
 ## Tests
 
