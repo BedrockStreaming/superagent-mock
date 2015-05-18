@@ -117,6 +117,17 @@ module.exports = function (request, config) {
             test.equal(err.response, http.STATUS_CODES[404]);
             test.done();
           });
+      },
+
+      'also can use "send" method': function (test) {
+        request.get('https://domain.send.example/666')
+          .send({superhero: "me"})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result.match[1], '666');
+            test.equal(result.data, 'Fixture ! - superhero:me');
+            test.done();
+          });
       }
     }
 
