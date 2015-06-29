@@ -111,7 +111,7 @@ require('superagent-mock')(request, config);
 
 ## Supported Methods
 
-GET and POST requests are mocked.
+GET, POST and PUT requests are mocked.
 
 ## Tests
 
