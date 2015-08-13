@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/License-MIT-00CCFF.svg?style=flat-square) 
+![](https://img.shields.io/badge/License-MIT-00CCFF.svg?style=flat-square)
 ![](https://img.shields.io/badge/superagent--mock-JS-FF0066.svg?style=flat-square)
 [![NPM Downloads](http://img.shields.io/npm/dm/superagent-mock.svg?style=flat-square)](https://www.npmjs.org/package/superagent-mock)
 [![Build Status](http://img.shields.io/travis/M6Web/superagent-mock.svg?style=flat-square)](https://travis-ci.org/M6Web/superagent-mock)
@@ -54,27 +54,27 @@ module.exports = [
      */
     fixtures: function (match, params) {
       /**
-       * example: 
+       * example:
        *   request.get('https://error.example/404').end(function(err, res){
        *     console.log(err); // 404
-       *   }) 
-       */ 
+       *   })
+       */
       if (match[1] === '404') {
         throw new Error(404);
       }
 
       /**
-       * example: 
+       * example:
        *   request.get('https://error.example/200').end(function(err, res){
        *     console.log(res.body); // "Data fixtures"
        *   })
        */
 
       /**
-       * example: 
+       * example:
        *   request.get('https://domain.send.example/').send({superhero: "me"}).end(function(err, res){
        *     console.log(res.body); // "Data fixtures - superhero:me"
-       *   }) 
+       *   })
        */
       if(params["superhero"]) {
         return 'Data fixtures - superhero:' + params["superhero"];
@@ -111,7 +111,7 @@ require('superagent-mock')(request, config);
 
 ## Supported Methods
 
-GET, POST and PUT requests are mocked.
+All methods are supported.
 
 ## Tests
 
@@ -122,7 +122,7 @@ To check code style: `npm run lint`.
 
 ## Credits
 
-Developped by the [Cytron Team](http://cytron.fr/) of [M6 Web](http://tech.m6web.fr/).   
+Developped by the [Cytron Team](http://cytron.fr/) of [M6 Web](http://tech.m6web.fr/).
 Tested with [nodeunit](https://github.com/caolan/nodeunit).
 
 ## License
