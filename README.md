@@ -109,9 +109,9 @@ var config = require('./superagent-mock-config');
 require('superagent-mock')(request, config);
 ```
 
-## Supported Methods
+## Supported methods
 
-All methods are supported.
+All request methods are supported (get, put, post, etc.).
 
 ## Tests
 
