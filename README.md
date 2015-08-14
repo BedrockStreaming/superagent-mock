@@ -44,43 +44,57 @@ module.exports = [
     /**
      * regular expression of URL
      */
-    pattern: 'https://domain.example/(\\w+)/',
+    pattern: 'https://domain.example(.*)',
 
     /**
      * returns the data
      *
      * @param match array Result of the resolution of the regular expression
      * @param params object sent by 'send' function
+     * @param headers object set by 'set' function
      */
-    fixtures: function (match, params) {
+    fixtures: function (match, params, headers) {
       /**
-       * example:
-       *   request.get('https://error.example/404').end(function(err, res){
+       * Returning error codes example:
+       *   request.get('https://domain.example/404').end(function(err, res){
        *     console.log(err); // 404
        *   })
        */
-      if (match[1] === '404') {
+      if (match[1] === '/404') {
         throw new Error(404);
       }
 
       /**
-       * example:
-       *   request.get('https://error.example/200').end(function(err, res){
-       *     console.log(res.body); // "Data fixtures"
+       * Checking on parameters example:
+       *   request.get('https://domain.example/hero').send({superhero: "superman"}).end(function(err, res){
+       *     console.log(res.body); // "Your hero: superman"
        *   })
        */
 
+      if (match[1] === '/hero') {
+        if(params['superhero']) {
+          return 'Your hero:' + params['superhero'];
+        } else {
+          return 'You didnt chose a hero';
+        }
+      }
+
+
       /**
-       * example:
-       *   request.get('https://domain.send.example/').send({superhero: "me"}).end(function(err, res){
-       *     console.log(res.body); // "Data fixtures - superhero:me"
+       * Checking on headers example:
+       *   request.get('https://domain.example/authorized_endpoint').set({Authorization: "9382hfih1834h"}).end(function(err, res){
+       *     console.log(res.body); // "Authenticated!"
        *   })
        */
-      if(params["superhero"]) {
-        return 'Data fixtures - superhero:' + params["superhero"];
-      } else {
-        return 'Data fixtures';
+
+      if (match[1] === '/authorized_endpoint') {
+        if(headers['Authorization']) {
+          return 'Authenticated!';
+        } else {
+          throw new Error(401); // Unauthorized
+        }
       }
+
     },
 
     /**
