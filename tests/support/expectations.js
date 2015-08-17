@@ -128,6 +128,16 @@ module.exports = function (request, config) {
             test.equal(result.data, 'Fixture ! - superhero:me');
             test.done();
           });
+      },
+
+      'setting headers': function (test) {
+        request.get('https://authorized.example/')
+          .set({Authorization: "valid_token"})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result.data, 'your token: valid_token');
+            test.done();
+          });
       }
     },
   'Method POST': {
@@ -230,6 +240,16 @@ module.exports = function (request, config) {
             test.equal(err.response, http.STATUS_CODES[404]);
             test.done();
           });
+      },
+
+      'setting headers': function (test) {
+        request.post('https://authorized.example/')
+          .set({Authorization: "valid_token"})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result.data, 'your token: valid_token');
+            test.done();
+          });
       }
     },
   'Method PUT': {
@@ -330,6 +350,16 @@ module.exports = function (request, config) {
             test.notEqual(err, null);
             test.equal(err.status, 404);
             test.equal(err.response, http.STATUS_CODES[404]);
+            test.done();
+          });
+      },
+
+      'setting headers': function (test) {
+        request.put('https://authorized.example/')
+          .set({Authorization: "valid_token"})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result.data, 'your token: valid_token');
             test.done();
           });
       }

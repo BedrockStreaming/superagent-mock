@@ -51,4 +51,14 @@ module.exports = [
     callback: function (match, data) {
       return {match: match, data: data};
     }
-  }];
+  },
+  {
+    pattern: 'https://authorized.example',
+    fixtures: function (match, params, headers) {
+      return 'your token: ' + headers['Authorization']
+    },
+    callback: function (match, data) {
+      return {match: match, data: data};
+    }
+  }
+  ];
