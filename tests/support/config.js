@@ -34,7 +34,7 @@ module.exports = [
     pattern: 'https://error.example/(\\w+)',
     fixtures: function (match) {
       var code = (match || [])[1] || 404;
-      var newErr = new Error(http.STATUS_CODES[code]);
+      var newErr = new Error(parseInt(code));
       newErr.response = http.STATUS_CODES[code];
       newErr.status = code;
       throw newErr;
