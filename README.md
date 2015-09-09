@@ -99,14 +99,26 @@ module.exports = [
     },
 
     /**
-     * returns the result of the request
+     * returns the result of the GET request
      *
      * @param match array Result of the resolution of the regular expression
      * @param data  mixed Data returns by `fixtures` attribute
      */
-    callback: function (match, data) {
+    get: function (match, data) {
       return {
         body: data
+      };
+    },
+
+    /**
+     * returns the result of the POST request
+     *
+     * @param match array Result of the resolution of the regular expression
+     * @param data  mixed Data returns by `fixtures` attribute
+     */
+    post: function (match, data) {
+      return {
+        code: 201
       };
     }
   },
@@ -127,6 +139,8 @@ require('superagent-mock')(request, config);
 ## Supported methods
 
 All request methods are supported (get, put, post, etc.).
+
+Each request method mock have to be declared in the config file.
 
 ## Tests
 

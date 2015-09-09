@@ -23,6 +23,7 @@ module.exports = function (request, config) {
           test.ok(!err);
           test.equal(result.match[1], '666');
           test.equal(result.data, 'Fixture !');
+          test.equal(result.code, 200);
           test.done();
         });
       },
@@ -158,6 +159,7 @@ module.exports = function (request, config) {
           test.ok(!err);
           test.equal(result.match[1], '666');
           test.equal(result.data, 'Fixture !');
+          test.equal(result.code, 201);
           test.done();
         });
       },
@@ -282,6 +284,7 @@ module.exports = function (request, config) {
           test.ok(!err);
           test.equal(result.match[1], '666');
           test.equal(result.data, 'Fixture !');
+          test.equal(result.code, 201);
           test.done();
         });
       },
