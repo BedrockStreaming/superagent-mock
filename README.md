@@ -58,6 +58,7 @@ module.exports = [
        * Returning error codes example:
        *   request.get('https://domain.example/404').end(function(err, res){
        *     console.log(err); // 404
+       *     console.log(res.notFound); // true
        *   })
        */
       if (match[1] === '/404') {

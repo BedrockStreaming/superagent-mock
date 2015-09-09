@@ -109,12 +109,24 @@ module.exports = function (request, config) {
           });
       },
 
-      'catches error and response it': function (test) {
+      'catches not found error and response it': function (test) {
         request.get('https://error.example/404')
           .end(function (err, result) {
             test.notEqual(err, null);
             test.equal(err.status, 404);
             test.equal(err.response, http.STATUS_CODES[404]);
+            test.ok(result.notFound)
+            test.done();
+          });
+      },
+
+      'catches unauthorized error and response it': function (test) {
+        request.get('https://error.example/401')
+          .end(function (err, result) {
+            test.notEqual(err, null);
+            test.equal(err.status, 401);
+            test.equal(err.response, http.STATUS_CODES[401]);
+            test.ok(result.unauthorized)
             test.done();
           });
       },
@@ -232,12 +244,24 @@ module.exports = function (request, config) {
           });
       },
 
-      'catches error and response it': function (test) {
+      'catches not found error and response it': function (test) {
         request.post('https://error.example/404')
           .end(function (err, result) {
             test.notEqual(err, null);
             test.equal(err.status, 404);
             test.equal(err.response, http.STATUS_CODES[404]);
+            test.ok(result.notFound)
+            test.done();
+          });
+      },
+
+      'catches unauthorized error and response it': function (test) {
+        request.post('https://error.example/401')
+          .end(function (err, result) {
+            test.notEqual(err, null);
+            test.equal(err.status, 401);
+            test.equal(err.response, http.STATUS_CODES[401]);
+            test.ok(result.unauthorized)
             test.done();
           });
       },
@@ -344,12 +368,24 @@ module.exports = function (request, config) {
           });
       },
 
-      'catches error and response it': function (test) {
+      'catches not found error and response it': function (test) {
         request.put('https://error.example/404')
           .end(function (err, result) {
             test.notEqual(err, null);
             test.equal(err.status, 404);
             test.equal(err.response, http.STATUS_CODES[404]);
+            test.ok(result.notFound)
+            test.done();
+          });
+      },
+
+      'catches unauthorized error and response it': function (test) {
+        request.put('https://error.example/401')
+          .end(function (err, result) {
+            test.notEqual(err, null);
+            test.equal(err.status, 401);
+            test.equal(err.response, http.STATUS_CODES[401]);
+            test.ok(result.unauthorized)
             test.done();
           });
       },
