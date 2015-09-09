@@ -28,6 +28,14 @@ module.exports = function (request, config) {
         });
       },
 
+      'matching simple request with default callback': function (test) {
+        request.get('https://callback.method.example').end(function (err, result) {
+          test.ok(!err);
+          test.equal(result.data, 'Fixture !');
+          test.done();
+        });
+      },
+
       'unmatching simple request': function (test) {
         request.get('https://dummy.domain/666').end(function (err, result) {
           test.ok(!err);
@@ -164,6 +172,14 @@ module.exports = function (request, config) {
         });
       },
 
+      'matching simple request with default callback': function (test) {
+        request.post('https://callback.method.example').end(function (err, result) {
+          test.ok(!err);
+          test.equal(result.data, 'Fixture !');
+          test.done();
+        });
+      },
+
       'unmatching simple request': function (test) {
         request.post('https://dummy.domain/666').end(function (err, result) {
           test.ok(!err);
@@ -285,6 +301,14 @@ module.exports = function (request, config) {
           test.equal(result.match[1], '666');
           test.equal(result.data, 'Fixture !');
           test.equal(result.code, 201);
+          test.done();
+        });
+      },
+
+      'matching simple request with default callback': function (test) {
+        request.put('https://callback.method.example').end(function (err, result) {
+          test.ok(!err);
+          test.equal(result.data, 'Fixture !');
           test.done();
         });
       },

@@ -140,7 +140,7 @@ require('superagent-mock')(request, config);
 
 All request methods are supported (get, put, post, etc.).
 
-Each request method mock have to be declared in the config file.
+Each request method mock have to be declared in the config file. Otherwise, the `callback` method is used.
 
 ## Tests
 

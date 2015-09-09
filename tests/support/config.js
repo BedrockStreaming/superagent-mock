@@ -96,5 +96,14 @@ module.exports = [
     put: function (match, data) {
       return {match: match, data: data};
     }
+  },
+  {
+    pattern: 'https://callback.method.example',
+    fixtures: function () {
+      return 'Fixture !';
+    },
+    callback: function (match, data) {
+      return {match: match, data: data};
+    }
   }
-  ];
+];
