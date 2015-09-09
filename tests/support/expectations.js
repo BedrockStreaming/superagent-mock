@@ -23,6 +23,15 @@ module.exports = function (request, config) {
           test.ok(!err);
           test.equal(result.match[1], '666');
           test.equal(result.data, 'Fixture !');
+          test.equal(result.code, 200);
+          test.done();
+        });
+      },
+
+      'matching simple request with default callback': function (test) {
+        request.get('https://callback.method.example').end(function (err, result) {
+          test.ok(!err);
+          test.equal(result.data, 'Fixture !');
           test.done();
         });
       },
@@ -158,6 +167,15 @@ module.exports = function (request, config) {
           test.ok(!err);
           test.equal(result.match[1], '666');
           test.equal(result.data, 'Fixture !');
+          test.equal(result.code, 201);
+          test.done();
+        });
+      },
+
+      'matching simple request with default callback': function (test) {
+        request.post('https://callback.method.example').end(function (err, result) {
+          test.ok(!err);
+          test.equal(result.data, 'Fixture !');
           test.done();
         });
       },
@@ -281,6 +299,15 @@ module.exports = function (request, config) {
         request.put('https://domain.example/666').end(function (err, result) {
           test.ok(!err);
           test.equal(result.match[1], '666');
+          test.equal(result.data, 'Fixture !');
+          test.equal(result.code, 201);
+          test.done();
+        });
+      },
+
+      'matching simple request with default callback': function (test) {
+        request.put('https://callback.method.example').end(function (err, result) {
+          test.ok(!err);
           test.equal(result.data, 'Fixture !');
           test.done();
         });

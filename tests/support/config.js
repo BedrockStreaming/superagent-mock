@@ -8,8 +8,14 @@ module.exports = [
     fixtures: function () {
       return 'Fixture !';
     },
-    callback: function (match, data) {
-      return {match: match, data: data};
+    get: function (match, data) {
+      return {match: match, data: data, code: 200};
+    },
+    post: function (match, data) {
+      return {match: match, data: data, code: 201};
+    },
+    put: function (match, data) {
+      return {match: match, data: data, code: 201};
     }
   },
   {
@@ -17,7 +23,13 @@ module.exports = [
     fixtures: function () {
       return 'Fixture !';
     },
-    callback: function (match, data) {
+    get: function (match, data) {
+      return {match: match, data: data};
+    },
+    post: function (match, data) {
+      return {match: match, data: data};
+    },
+    put: function (match, data) {
       return {match: match, data: data};
     }
   },
@@ -26,7 +38,13 @@ module.exports = [
     fixtures: function (match) {
       return match && match[1];
     },
-    callback: function (match, data) {
+    get: function (match, data) {
+      return {match: match, data: data};
+    },
+    post: function (match, data) {
+      return {match: match, data: data};
+    },
+    put: function (match, data) {
       return {match: match, data: data};
     }
   },
@@ -39,7 +57,13 @@ module.exports = [
       newErr.status = code;
       throw newErr;
     },
-    callback: function (match, data) {
+    get: function (match, data) {
+      return {match: match, data: data};
+    },
+    post: function (match, data) {
+      return {match: match, data: data};
+    },
+    put: function (match, data) {
       return {match: match, data: data};
     }
   },
@@ -48,7 +72,13 @@ module.exports = [
     fixtures: function (match, params) {
       return 'Fixture ! - superhero:' + params.superhero;
     },
-    callback: function (match, data) {
+    get: function (match, data) {
+      return {match: match, data: data};
+    },
+    post: function (match, data) {
+      return {match: match, data: data};
+    },
+    put: function (match, data) {
       return {match: match, data: data};
     }
   },
@@ -57,8 +87,23 @@ module.exports = [
     fixtures: function (match, params, headers) {
       return 'your token: ' + headers['Authorization']
     },
+    get: function (match, data) {
+      return {match: match, data: data};
+    },
+    post: function (match, data) {
+      return {match: match, data: data};
+    },
+    put: function (match, data) {
+      return {match: match, data: data};
+    }
+  },
+  {
+    pattern: 'https://callback.method.example',
+    fixtures: function () {
+      return 'Fixture !';
+    },
     callback: function (match, data) {
       return {match: match, data: data};
     }
   }
-  ];
+];
