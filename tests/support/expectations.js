@@ -3,6 +3,8 @@
 var http = require('http');
 
 module.exports = function (request, config) {
+  var superagentMock;
+
   return {
 
     'setUp': function (go) {
@@ -12,11 +14,28 @@ module.exports = function (request, config) {
       };
 
       // Init module
-      require('./../../lib/superagent-mock')(request, config);
+      superagentMock = require('./../../lib/superagent-mock')(request, config);
 
       go();
     },
 
+    tearDown: function (go) {
+      superagentMock.unset();
+
+      go();
+    },
+
+    'Lib': {
+      'handle reset of mock': function (test) {
+        superagentMock.unset();
+
+        request.get('https://callback.method.example').end(function (err, result) {
+          test.ok(!err);
+          test.equal(result, 'Real call done');
+          test.done();
+        });
+      }
+    },
     'Method GET': {
       'matching simple request': function (test) {
         request.get('https://domain.example/666').end(function (err, result) {

@@ -133,7 +133,13 @@ Then use the plugin:
 var request = require('superagent');
 var config = require('./superagent-mock-config');
 
-require('superagent-mock')(request, config);
+//Before tests
+var superagentMock = require('superagent-mock')(request, config);
+
+...
+
+//After tests
+superagentMock.unset();
 ```
 
 ## Supported methods
