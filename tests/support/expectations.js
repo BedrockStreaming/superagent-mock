@@ -3,6 +3,7 @@
 var http = require('http');
 
 module.exports = function (request, config) {
+  var headers = null;
   var superagentMock;
 
   return {
@@ -13,6 +14,12 @@ module.exports = function (request, config) {
         fn(null, 'Real call done');
       };
 
+      request.Request.prototype.set = function (values) {
+        headers = values;
+
+        return this;
+      };
+
       // Init module
       superagentMock = require('./../../lib/superagent-mock')(request, config);
 
@@ -21,6 +28,7 @@ module.exports = function (request, config) {
 
     tearDown: function (go) {
       superagentMock.unset();
+      headers = null;
 
       go();
     },
@@ -180,7 +188,7 @@ module.exports = function (request, config) {
           });
       }
     },
-  'Method POST': {
+    'Method POST': {
       'matching simple request': function (test) {
         request.post('https://domain.example/666').end(function (err, result) {
           test.ok(!err);
@@ -313,7 +321,7 @@ module.exports = function (request, config) {
           });
       }
     },
-  'Method PUT': {
+    'Method PUT': {
       'matching simple request': function (test) {
         request.put('https://domain.example/666').end(function (err, result) {
           test.ok(!err);
@@ -435,13 +443,26 @@ module.exports = function (request, config) {
             test.done();
           });
       },
-
-      'setting headers': function (test) {
+    },
+    'Header setting': {
+      'setting mocked headers': function (test) {
         request.put('https://authorized.example/')
           .set({Authorization: "valid_token"})
           .end(function (err, result) {
             test.ok(!err);
             test.equal(result.data, 'your token: valid_token');
+            test.equal(headers, null);
+            test.done();
+          });
+      },
+
+      'setting real headers': function (test) {
+        request.put('https://dummy.example/')
+          .set({real: "foo"})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result, 'Real call done');
+            test.deepEqual(headers, {real: "foo"});
             test.done();
           });
       }
