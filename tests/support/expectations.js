@@ -319,6 +319,17 @@ module.exports = function (request, config) {
             test.equal(result.data, 'your token: valid_token');
             test.done();
           });
+      },
+
+      'setting multiple headers': function (test) {
+        request.post('https://multiple-headers.example/')
+          .set('X-API-Key', 'foobar')
+          .set('Content-Type', 'application/json')
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result.data, 'X-API-Key: foobar; Content-Type: application/json');
+            test.done();
+          });
       }
     },
     'Method PUT': {

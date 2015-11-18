@@ -98,6 +98,21 @@ module.exports = [
     }
   },
   {
+    pattern: 'https://multiple-headers.example',
+    fixtures: function (match, params, headers) {
+      return 'X-API-Key: ' + headers['X-API-Key'] + '; Content-Type: ' + headers['Content-Type']
+    },
+    get: function (match, data) {
+      return {match: match, data: data};
+    },
+    post: function (match, data) {
+      return {match: match, data: data};
+    },
+    put: function (match, data) {
+      return {match: match, data: data};
+    }
+  },
+  {
     pattern: 'https://callback.method.example',
     fixtures: function () {
       return 'Fixture !';
