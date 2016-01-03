@@ -186,7 +186,14 @@ module.exports = function (request, config) {
             test.equal(result.data, 'your token: valid_token');
             test.done();
           });
+      },
+
+      'aborting simple request': function (test) {
+        request.get('https://domain.example/666').abort();
+
+        test.done();
       }
+
     },
     'Method POST': {
       'matching simple request': function (test) {
@@ -330,6 +337,12 @@ module.exports = function (request, config) {
             test.equal(result.data, 'X-API-Key: foobar; Content-Type: application/json');
             test.done();
           });
+      },
+
+      'aborting simple request': function (test) {
+        request.post('https://domain.example/666').abort();
+
+        test.done();
       }
     },
     'Method PUT': {
@@ -454,6 +467,12 @@ module.exports = function (request, config) {
             test.done();
           });
       },
+
+      'aborting simple request': function (test) {
+        request.put('https://domain.example/666').abort();
+
+        test.done();
+      }
     },
     'Header setting': {
       'setting mocked headers': function (test) {
