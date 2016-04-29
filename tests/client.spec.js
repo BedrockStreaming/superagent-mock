@@ -4,7 +4,7 @@
 var component = require('component-as-module');
 
 // Get the "client" version of superagent
-var request = component('node_modules/superagent', function (loader) {
+var request = component('tests/support', function (loader) {
   loader.register('component-emitter', function () {
     return require('superagent/node_modules/component-emitter');
   });
