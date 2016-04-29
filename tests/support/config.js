@@ -68,6 +68,23 @@ module.exports = [
     }
   },
   {
+    pattern: 'https://validation.example',
+    fixtures: function (match, params, headers) {
+      var error = new Error( 422 );
+      var code = (match || [])[1] || 422;
+      var newErr = new Error(parseInt(code));
+      newErr.response = http.STATUS_CODES[code];
+      newErr.status = code;
+      newErr.responseHeader = 'application/json';
+      newErr.responseText = '{"password": "missing"}';
+      newErr.responseBody = { password: 'missing' };
+      throw newErr;
+    },
+    post: function (match, data) {
+      return {match: match, data: data};
+    }
+  },
+  {
     pattern: 'https://domain.send.example/(\\w+)',
     fixtures: function (match, params) {
       return 'Fixture ! - superhero:' + params.superhero;

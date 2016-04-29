@@ -307,7 +307,18 @@ module.exports = function (request, config) {
           });
       },
 
-      'catches unauthorized error and response it': function (test) {
+      'catches validation error and response it': function (test) {
+        request.post('https://validation.example')
+          .end(function (err, result) {
+            test.notEqual(err, null);
+            test.equal(err.status, 422);
+            test.equal(err.response, http.STATUS_CODES[422]);
+            test.deepEqual(result.body, {password: 'missing'});
+            test.done();
+          });
+      },
+
+      'catches validation errors and sets text': function (test) {
         request.post('https://error.example/401')
           .end(function (err, result) {
             test.notEqual(err, null);
