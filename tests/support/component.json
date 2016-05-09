@@ -1,0 +1,14 @@
+{
+  "name": "superagent",
+  "scripts": [
+    "../../node_modules/superagent/lib/client.js",
+    "../../node_modules/superagent/lib/is-object.js",
+    "../../node_modules/superagent/lib/request-base.js",
+    "../../node_modules/superagent/lib/request.js"
+  ],
+  "main": "../../node_modules/superagent/lib/client.js",
+  "dependencies": {
+    "component/emitter": "*",
+    "component/reduce": "*"
+  }
+}
