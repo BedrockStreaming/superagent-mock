@@ -5,6 +5,11 @@ var http = require('http');
 module.exports = function (request, config) {
   var headers = null;
   var superagentMock;
+  var currentLog = null;
+  var logger = function (log) {
+    currentLog = log;
+  };
+
 
   return {
 
@@ -21,7 +26,7 @@ module.exports = function (request, config) {
       };
 
       // Init module
-      superagentMock = require('./../../lib/superagent-mock')(request, config);
+      superagentMock = require('./../../lib/superagent-mock')(request, config, logger);
 
       go();
     },
@@ -29,6 +34,7 @@ module.exports = function (request, config) {
     tearDown: function (go) {
       superagentMock.unset();
       headers = null;
+      currentLog = null;
 
       go();
     },
@@ -151,7 +157,7 @@ module.exports = function (request, config) {
             test.notEqual(err, null);
             test.equal(err.status, 404);
             test.equal(err.response, http.STATUS_CODES[404]);
-            test.ok(result.notFound)
+            test.ok(result.notFound);
             test.done();
           });
       },
@@ -162,7 +168,7 @@ module.exports = function (request, config) {
             test.notEqual(err, null);
             test.equal(err.status, 401);
             test.equal(err.response, http.STATUS_CODES[401]);
-            test.ok(result.unauthorized)
+            test.ok(result.unauthorized);
             test.done();
           });
       },
@@ -529,6 +535,73 @@ module.exports = function (request, config) {
         }, Error, 'Should throw internal exception');
         test.equal(calls, 1);
         test.done();
+      }
+    },
+    'Logger': {
+      'mocked GET': function (test) {
+        request.get('https://domain.example/666').end(function (err, result) {
+          test.ok(!err);
+          test.equal(currentLog.matcher, 'https://domain.example/(\\w+)');
+          test.equal(currentLog.data, undefined);
+          test.equal(currentLog.mocked, true);
+          test.equal(currentLog.url, 'https://domain.example/666');
+          test.equal(currentLog.method, 'GET');
+          test.equal(currentLog.headers, undefined);
+          test.done();
+        });
+      },
+      'mocked PUT': function (test) {
+        request.put('https://domain.example/666').end(function (err, result) {
+          test.ok(!err);
+          test.equal(currentLog.matcher, 'https://domain.example/(\\w+)');
+          test.equal(currentLog.data, undefined);
+          test.equal(currentLog.mocked, true);
+          test.equal(currentLog.url, 'https://domain.example/666');
+          test.equal(currentLog.method, 'PUT');
+          test.equal(currentLog.headers, undefined);
+          test.done();
+        });
+      },
+      'mocked POST': function (test) {
+        request.post('https://domain.example/666', 'foo').end(function (err, result) {
+          test.ok(!err);
+          test.equal(currentLog.matcher, 'https://domain.example/(\\w+)');
+          test.equal(currentLog.data, 'foo');
+          test.equal(currentLog.mocked, true);
+          test.equal(currentLog.url, 'https://domain.example/666');
+          test.equal(currentLog.method, 'POST');
+          test.equal(currentLog.headers, undefined);
+          test.done();
+        });
+      },
+      'mocked headers (object)': function (test) {
+        request.put('https://authorized.example/')
+          .set({Authorization: 'valid_token', 'x-6play': 1})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(currentLog.matcher, 'https://authorized.example');
+            test.equal(currentLog.data, undefined);
+            test.equal(currentLog.mocked, true);
+            test.equal(currentLog.url, 'https://authorized.example/');
+            test.equal(currentLog.method, 'PUT');
+            test.deepEqual(currentLog.headers, [{Authorization: 'valid_token'}, {'x-6play': 1}]);
+            test.done();
+          });
+      },
+      'mocked headers (values)': function (test) {
+        request.put('https://authorized.example/')
+          .set('Authorization', 'valid_token')
+          .set('x-6play', 1)
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(currentLog.matcher, 'https://authorized.example');
+            test.equal(currentLog.data, undefined);
+            test.equal(currentLog.mocked, true);
+            test.equal(currentLog.url, 'https://authorized.example/');
+            test.equal(currentLog.method, 'PUT');
+            test.deepEqual(currentLog.headers, [{Authorization: 'valid_token'}, {'x-6play': 1}]);
+            test.done();
+          });
       }
     }
   };

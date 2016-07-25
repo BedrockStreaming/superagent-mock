@@ -133,12 +133,12 @@ Then use the plugin:
 var request = require('superagent');
 var config = require('./superagent-mock-config');
 
-//Before tests
+// Before tests
 var superagentMock = require('superagent-mock')(request, config);
 
 ...
 
-//After tests
+// After tests
 superagentMock.unset();
 ```
 
@@ -147,6 +147,37 @@ superagentMock.unset();
 All request methods are supported (get, put, post, etc.).
 
 Each request method mock have to be declared in the config file. Otherwise, the `callback` method is used.
+
+## Logging
+
+You can monitor each call, that has been intercepted by superagent-mock or not, by passing a callback function at initialization.
+
+``` js
+// ./server.js file
+var request = require('superagent');
+var config = require('./superagent-mock-config');
+
+var logger = function(log)  {
+  console.log('superagent call', log);
+};
+
+// Before tests
+var superagentMock = require('superagent-mock')(request, config, logger);
+
+...
+
+// After tests
+superagentMock.unset();
+```
+
+The callback function will be called with an object containing the following informations
+ - data : data used with `superagent.send` function
+ - headers : array of headers given by `superagent.set` function
+ - matcher : regex matching the current url which is defined in the provided config
+ - url : url which superagent was called
+ - method : HTTP method used for the call
+ - timestamp : timestamp of the superagent call
+ - mocked : true if the call was mocked by superagent mock, false if it used superagent real methods
 
 ## Tests
 
