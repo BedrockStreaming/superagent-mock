@@ -507,6 +507,17 @@ module.exports = function (request, config) {
             test.done();
           });
       }
+    },
+    'end': {
+      'returns request object': function (test) {
+        var requestObject = request.get('https://domain.example/test')
+                                   .set({header: "value"})
+                                   .end(function(err, result){});
+
+        test.equal(requestObject.url, 'https://domain.example/test');
+        test.deepEqual(requestObject.headers, { header: 'value' }),
+        test.done();
+      }
     }
   };
 };
