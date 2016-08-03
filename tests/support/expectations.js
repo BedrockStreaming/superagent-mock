@@ -515,7 +515,19 @@ module.exports = function (request, config) {
                                    .end(function(err, result){});
 
         test.equal(requestObject.url, 'https://domain.example/test');
-        test.deepEqual(requestObject.headers, { header: 'value' }),
+        test.deepEqual(requestObject.headers, { header: 'value' });
+        test.done();
+      },
+      'is only called once': function(test) {
+        var calls = 0;
+        test.throws(function() {
+          request.get('https://domain.example/666').end(function (err) {
+            calls++;
+            test.ok(!err);
+            throw new Error('test');
+          });
+        }, Error, 'Should throw internal exception');
+        test.equal(calls, 1);
         test.done();
       }
     }
