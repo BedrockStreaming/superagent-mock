@@ -34,10 +34,37 @@ module.exports = [
     }
   },
   {
+    pattern: 'https://domain.strict-params.example/search\\?(q=\\w+)&(page=\\d+)',
+    fixtures: function () {
+      return 'Fixture !';
+    },
+    get: function (match, data) {
+      return {match: match, data: data};
+    },
+    post: function (match, data) {
+      return {match: match, data: data};
+    },
+    put: function (match, data) {
+      return {match: match, data: data};
+    }
+  },
+  {
     pattern: 'https://match.example/(\\w+)',
     fixtures: function (match) {
       return match && match[1];
     },
+    get: function (match, data) {
+      return {match: match, data: data};
+    },
+    post: function (match, data) {
+      return {match: match, data: data};
+    },
+    put: function (match, data) {
+      return {match: match, data: data};
+    }
+  },
+  {
+    pattern: 'https://match.example/foo',
     get: function (match, data) {
       return {match: match, data: data};
     },

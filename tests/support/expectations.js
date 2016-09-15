@@ -123,6 +123,49 @@ module.exports = function (request, config) {
           });
       },
 
+      'matching strict parametrized request (with url)': function (test) {
+        request.get('https://domain.strict-params.example/search?q=word&page=1')
+          .end(function (err, result) {
+            test.ok(!err);
+            test.notEqual(result.match.indexOf('q=word'), -1);
+            test.notEqual(result.match.indexOf('page=1'), -1);
+            test.equal(result.data, 'Fixture !');
+            test.done();
+          });
+      },
+
+      'matching strict parametrized request (mixed)': function (test) {
+        request.get('https://domain.strict-params.example/search?q=word')
+          .query({page: 1})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.notEqual(result.match.indexOf('q=word'), -1);
+            test.notEqual(result.match.indexOf('page=1'), -1);
+            test.equal(result.data, 'Fixture !');
+            test.done();
+          });
+      },
+
+      'unmatching strict parametrized request (missing parameter)': function (test) {
+        request.get('https://domain.strict-params.example/search')
+          .query({q: 'word'})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result, 'Real call done');
+            test.done();
+          });
+      },
+
+      'unmatching strict parametrized request (wrong parameter)': function (test) {
+        request.get('https://domain.strict-params.example/search?q=word')
+          .query({q: 'word', limit: 1})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result, 'Real call done');
+            test.done();
+          });
+      },
+
       'matching parametrized request (no parameters)': function (test) {
         request.get('https://domain.params.example/list')
           .end(function (err, result) {
@@ -147,6 +190,7 @@ module.exports = function (request, config) {
         request.get(url)
           .end(function (err, result) {
             test.equal(result.data, 'foo');
+            test.equal(currentLog.warning, 'An other pattern matches this request');
             test.done();
           });
       },
@@ -274,6 +318,49 @@ module.exports = function (request, config) {
           });
       },
 
+      'matching strict parametrized request (with url)': function (test) {
+        request.post('https://domain.strict-params.example/search?q=word&page=1')
+          .end(function (err, result) {
+            test.ok(!err);
+            test.notEqual(result.match.indexOf('q=word'), -1);
+            test.notEqual(result.match.indexOf('page=1'), -1);
+            test.equal(result.data, 'Fixture !');
+            test.done();
+          });
+      },
+
+      'matching strict parametrized request (mixed)': function (test) {
+        request.post('https://domain.strict-params.example/search?q=word')
+          .query({page: 1})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.notEqual(result.match.indexOf('q=word'), -1);
+            test.notEqual(result.match.indexOf('page=1'), -1);
+            test.equal(result.data, 'Fixture !');
+            test.done();
+          });
+      },
+
+      'unmatching strict parametrized request (missing parameter)': function (test) {
+        request.post('https://domain.strict-params.example/search')
+          .query({q: 'word'})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result, 'Real call done');
+            test.done();
+          });
+      },
+
+      'unmatching strict parametrized request (wrong parameter)': function (test) {
+        request.post('https://domain.strict-params.example/search?q=word')
+          .query({q: 'word', limit: 1})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result, 'Real call done');
+            test.done();
+          });
+      },
+
       'matching parametrized request (no parameters)': function (test) {
         request.post('https://domain.params.example/list')
           .end(function (err, result) {
@@ -298,6 +385,7 @@ module.exports = function (request, config) {
         request.post(url)
           .end(function (err, result) {
             test.equal(result.data, 'foo');
+            test.equal(currentLog.warning, 'An other pattern matches this request');
             test.done();
           });
       },
@@ -435,6 +523,49 @@ module.exports = function (request, config) {
           });
       },
 
+      'matching strict parametrized request (with url)': function (test) {
+        request.put('https://domain.strict-params.example/search?q=word&page=1')
+          .end(function (err, result) {
+            test.ok(!err);
+            test.notEqual(result.match.indexOf('q=word'), -1);
+            test.notEqual(result.match.indexOf('page=1'), -1);
+            test.equal(result.data, 'Fixture !');
+            test.done();
+          });
+      },
+
+      'matching strict parametrized request (mixed)': function (test) {
+        request.put('https://domain.strict-params.example/search?q=word')
+          .query({page: 1})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.notEqual(result.match.indexOf('q=word'), -1);
+            test.notEqual(result.match.indexOf('page=1'), -1);
+            test.equal(result.data, 'Fixture !');
+            test.done();
+          });
+      },
+
+      'unmatching strict parametrized request (missing parameter)': function (test) {
+        request.put('https://domain.strict-params.example/search')
+          .query({q: 'word'})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result, 'Real call done');
+            test.done();
+          });
+      },
+
+      'unmatching strict parametrized request (wrong parameter)': function (test) {
+        request.put('https://domain.strict-params.example/search?q=word')
+          .query({q: 'word', limit: 1})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result, 'Real call done');
+            test.done();
+          });
+      },
+
       'matching parametrized request (no parameters)': function (test) {
         request.put('https://domain.params.example/list')
           .end(function (err, result) {
@@ -459,6 +590,7 @@ module.exports = function (request, config) {
         request.put(url)
           .end(function (err, result) {
             test.equal(result.data, 'foo');
+            test.equal(currentLog.warning, 'An other pattern matches this request');
             test.done();
           });
       },
@@ -496,6 +628,7 @@ module.exports = function (request, config) {
         request.put('https://authorized.example/')
           .set({Authorization: "valid_token"})
           .end(function (err, result) {
+            console.log(err);
             test.ok(!err);
             test.equal(result.data, 'your token: valid_token');
             test.equal(headers, null);
