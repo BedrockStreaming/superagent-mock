@@ -190,7 +190,19 @@ module.exports = function (request, config) {
         request.get(url)
           .end(function (err, result) {
             test.equal(result.data, 'foo');
-            test.equal(currentLog.warning, 'An other pattern matches this request');
+            test.deepEqual(currentLog.warnings, ['This other pattern matches the query but was ignored: https://match.example/foo']);
+            test.done();
+          });
+      },
+
+      'attempt to match without query params': function (test) {
+        var url = 'https://forget.query.params';
+        request.get(url)
+          .query({param: 'forget'})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result, 'Real call done');
+            test.deepEqual(currentLog.warnings, ['This pattern was ignored because it doesn\'t matches the query params: https://forget.query.params$']);
             test.done();
           });
       },
@@ -385,7 +397,19 @@ module.exports = function (request, config) {
         request.post(url)
           .end(function (err, result) {
             test.equal(result.data, 'foo');
-            test.equal(currentLog.warning, 'An other pattern matches this request');
+            test.deepEqual(currentLog.warnings, ['This other pattern matches the query but was ignored: https://match.example/foo']);
+            test.done();
+          });
+      },
+
+      'attempt to match without query params': function (test) {
+        var url = 'https://forget.query.params';
+        request.post(url)
+          .query({param: 'forget'})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result, 'Real call done');
+            test.deepEqual(currentLog.warnings, ['This pattern was ignored because it doesn\'t matches the query params: https://forget.query.params$']);
             test.done();
           });
       },
@@ -590,7 +614,19 @@ module.exports = function (request, config) {
         request.put(url)
           .end(function (err, result) {
             test.equal(result.data, 'foo');
-            test.equal(currentLog.warning, 'An other pattern matches this request');
+            test.deepEqual(currentLog.warnings, ['This other pattern matches the query but was ignored: https://match.example/foo']);
+            test.done();
+          });
+      },
+
+      'attempt to match without query params': function (test) {
+        var url = 'https://forget.query.params';
+        request.put(url)
+          .query({param: 'forget'})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result, 'Real call done');
+            test.deepEqual(currentLog.warnings, ['This pattern was ignored because it doesn\'t matches the query params: https://forget.query.params$']);
             test.done();
           });
       },
@@ -628,7 +664,6 @@ module.exports = function (request, config) {
         request.put('https://authorized.example/')
           .set({Authorization: "valid_token"})
           .end(function (err, result) {
-            console.log(err);
             test.ok(!err);
             test.equal(result.data, 'your token: valid_token');
             test.equal(headers, null);
