@@ -14,9 +14,11 @@
     "type": "git",
     "url": "https://github.com/M6Web/superagent-mock"
   },
+  "peerDependencies": {
+    "superagent": "^2.3.0"
+  },
   "dependencies": {
-    "qs": "^2.3.3",
-    "superagent": "^1.1.0"
+    "qs": "^2.3.3"
   },
   "devDependencies": {
     "component-as-module": "0.3.0",
