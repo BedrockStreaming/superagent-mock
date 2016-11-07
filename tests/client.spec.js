@@ -6,11 +6,21 @@ var component = require('component-as-module');
 // Get the "client" version of superagent
 var request = component('tests/support', function (loader) {
   loader.register('component-emitter', function () {
-    return require('superagent/node_modules/component-emitter');
+    try {
+      // npm >= 3
+      return require('component-emitter');
+    } catch (e) {
+      return require('superagent/node_modules/component-emitter');
+    }
   });
 
   loader.register('component-reduce', function () {
-    return require('superagent/node_modules/reduce-component');
+    try {
+      // npm >= 3
+      return require('reduce-component');
+    } catch (e) {
+      return require('superagent/node_modules/reduce-component');
+    }
   });
 
   loader.loadDependency('emitter');
