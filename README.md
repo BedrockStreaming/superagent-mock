@@ -21,8 +21,6 @@
 
 [superagent](https://github.com/visionmedia/superagent) plugin allowing to simulate HTTP calls by returning data fixtures based on the requested URL.
 
-**Note**: this plugin is developed for `superagent: ^v1.1.0`.
-
 See [this post](http://tech.m6web.fr/how-did-we-mock-the-backend-developers.html) to know why we use superagent-mock at M6Web.
 
 ## Installation
