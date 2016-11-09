@@ -19,10 +19,11 @@ module.exports = function (request, config) {
         fn(null, 'Real call done');
       };
 
+      var oldSet = request.Request.prototype.set;
       request.Request.prototype.set = function (values) {
         headers = values;
 
-        return this;
+        return oldSet.call(this, values);
       };
 
       // Init module
