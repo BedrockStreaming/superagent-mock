@@ -19,7 +19,7 @@ module.exports = function (request, config) {
         fn(null, 'Real call done');
       };
 
-      const oldSet = request.Request.prototype.set;
+      var oldSet = request.Request.prototype.set;
       request.Request.prototype.set = function (values) {
         headers = values;
 
