@@ -1,5 +1,6 @@
 language: node_js
 node_js:
-  - '0.10'
+  - '4'
+  - '5'
   - '6'
-script: npm install superagent@2.* && npm run lint && npm test
+script: npm install superagent@3.* && npm run lint && npm test
