@@ -1,5 +1,7 @@
 'use strict';
 
+global.window = {};
+
 // Create specifics component require
 var component = require('component-as-module');
 
