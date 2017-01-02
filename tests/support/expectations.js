@@ -567,8 +567,8 @@ module.exports = function (request, config, isServer) {
           .query({page: 1})
           .end(function (err, result) {
             test.ok(!err);
-            test.notEqual(result.match[0].indexOf('q=word'), -1);
-            test.notEqual(result.match[0].indexOf('page=1'), -1);
+            test.notEqual(result.match.indexOf('q=word'), -1);
+            test.notEqual(result.match.indexOf('page=1'), -1);
             test.equal(result.data, 'Fixture !');
             test.done();
           });
