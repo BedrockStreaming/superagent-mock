@@ -1,8 +1,5 @@
 'use strict';
 
-var superagentPackage = require('superagent/package.json');
-var superagentUserAgent = 'node-superagent/' + superagentPackage.version;
-
 var http = require('http');
 
 module.exports = function (request, config, isServer) {
@@ -12,6 +9,8 @@ module.exports = function (request, config, isServer) {
   var logger = function (log) {
     currentLog = log;
   };
+  var superagentPackage = require('superagent/package.json');
+  var superagentUserAgentHeader = isServer ? {"User-Agent": 'node-superagent/' + superagentPackage.version} : {};
 
   return {
 
@@ -26,6 +25,7 @@ module.exports = function (request, config, isServer) {
         if (typeof field === 'object') { // spy on set to collect the used arguments
           headers = field;
         }
+
         return oldSet.call(this, field, value);
       };
 
@@ -412,7 +412,7 @@ module.exports = function (request, config, isServer) {
           .query({param: 'forget'})
           .end(function (err, result) {
             test.ok(!err);
-            test.equal(result.match.length, 1); //no other match
+            test.equal(result, 'Real call done');
             test.deepEqual(currentLog.warnings, ['This pattern was ignored because it doesn\'t matches the query params: https://forget.query.params$']);
             test.done();
           });
@@ -683,10 +683,7 @@ module.exports = function (request, config, isServer) {
                                    .end(function(err, result){});
 
         test.equal(requestObject.url, 'https://domain.example/test');
-        test.deepEqual(requestObject.header, isServer
-            ? { "User-Agent": superagentUserAgent, header: 'value' }
-            : { header: 'value' }
-          );
+        test.deepEqual(requestObject.header, Object.assign({header: 'value'}, superagentUserAgentHeader));
         test.done();
       },
       'is only called once': function(test) {
@@ -711,9 +708,7 @@ module.exports = function (request, config, isServer) {
           test.equal(currentLog.mocked, true);
           test.equal(currentLog.url, 'https://domain.example/666');
           test.equal(currentLog.method, 'GET');
-          test.deepEqual(currentLog.headers, isServer
-            ? {"User-Agent": superagentUserAgent}
-            : {});
+          test.deepEqual(currentLog.headers, superagentUserAgentHeader);
           test.done();
         });
       },
@@ -725,8 +720,7 @@ module.exports = function (request, config, isServer) {
           test.equal(currentLog.mocked, true);
           test.equal(currentLog.url, 'https://domain.example/666');
           test.equal(currentLog.method, 'PUT');
-          test.deepEqual(currentLog.headers, isServer
-            ? {"User-Agent": superagentUserAgent}:{});
+          test.deepEqual(currentLog.headers, superagentUserAgentHeader);
           test.done();
         });
       },
@@ -738,9 +732,7 @@ module.exports = function (request, config, isServer) {
           test.equal(currentLog.mocked, true);
           test.equal(currentLog.url, 'https://domain.example/666');
           test.equal(currentLog.method, 'POST');
-          test.deepEqual(currentLog.headers, isServer
-            ? {"User-Agent": superagentUserAgent, 'Content-Type': 'application/x-www-form-urlencoded'}
-            : {'Content-Type': 'application/x-www-form-urlencoded'});
+          test.deepEqual(currentLog.headers, Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, superagentUserAgentHeader));
           test.done();
         });
       },
@@ -754,9 +746,7 @@ module.exports = function (request, config, isServer) {
             test.equal(currentLog.mocked, true);
             test.equal(currentLog.url, 'https://authorized.example/');
             test.equal(currentLog.method, 'PUT');
-            test.deepEqual(currentLog.headers, isServer
-              ? {"User-Agent": superagentUserAgent, Authorization: 'valid_token', "x-6play": 1}
-              : { Authorization: 'valid_token', "x-6play": 1});
+            test.deepEqual(currentLog.headers, Object.assign({Authorization: 'valid_token', "x-6play": 1}, superagentUserAgentHeader));
             test.done();
           });
       },
@@ -771,9 +761,7 @@ module.exports = function (request, config, isServer) {
             test.equal(currentLog.mocked, true);
             test.equal(currentLog.url, 'https://authorized.example/');
             test.equal(currentLog.method, 'PUT');
-            test.deepEqual(currentLog.headers, isServer
-              ? {"User-Agent": superagentUserAgent, Authorization: 'valid_token', "x-6play": 1}
-              : {Authorization: 'valid_token', "x-6play": 1});
+            test.deepEqual(currentLog.headers, Object.assign({Authorization: 'valid_token', "x-6play": 1}, superagentUserAgentHeader));
             test.done();
           });
       }
