@@ -664,6 +664,15 @@ module.exports = function (request, config, isServer) {
       }
     },
     'Header setting': {
+      'setting mocked headers': function (test) {
+        request.put('https://authorized.example/')
+          .set({Authorization: "valid_token"})
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result.data, 'your token: valid_token');
+            test.done();
+          });
+      },
 
       'setting real headers': function (test) {
         request.put('https://dummy.example/')
