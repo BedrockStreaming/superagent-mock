@@ -17,16 +17,13 @@
   "peerDependencies": {
     "superagent": "^3.3.1"
   },
-  "dependencies": {
-    "qs": "^2.3.3"
-  },
   "devDependencies": {
     "component-as-module": "0.3.0",
     "eslint": "0.12.0",
     "nodeunit": "0.10.2"
   },
   "scripts": {
-    "test": "./node_modules/nodeunit/bin/nodeunit ./tests",
-    "lint": "./node_modules/eslint/bin/eslint.js ./lib"
+    "test": "nodeunit ./tests",
+    "lint": "eslint ./lib"
   }
 }

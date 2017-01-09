@@ -2,14 +2,15 @@
 
 var http = require('http');
 
-module.exports = function (request, config) {
+module.exports = function (request, config, isServer) {
   var headers = null;
   var superagentMock;
   var currentLog = null;
   var logger = function (log) {
     currentLog = log;
   };
-
+  var superagentPackage = require('superagent/package.json');
+  var superagentUserAgentHeader = isServer ? {"User-Agent": 'node-superagent/' + superagentPackage.version} : {};
 
   return {
 
@@ -20,10 +21,12 @@ module.exports = function (request, config) {
       };
 
       var oldSet = request.Request.prototype.set;
-      request.Request.prototype.set = function (values) {
-        headers = values;
+      request.Request.prototype.set = function (field, value) {
+        if (typeof field === 'object') { // spy on set to collect the used arguments
+          headers = field;
+        }
 
-        return oldSet.call(this, values);
+        return oldSet.call(this, field, value);
       };
 
       // Init module
@@ -667,7 +670,6 @@ module.exports = function (request, config) {
           .end(function (err, result) {
             test.ok(!err);
             test.equal(result.data, 'your token: valid_token');
-            test.equal(headers, null);
             test.done();
           });
       },
@@ -690,7 +692,7 @@ module.exports = function (request, config) {
                                    .end(function(err, result){});
 
         test.equal(requestObject.url, 'https://domain.example/test');
-        test.deepEqual(requestObject.headers, { header: 'value' });
+        test.deepEqual(requestObject.header, Object.assign({header: 'value'}, superagentUserAgentHeader));
         test.done();
       },
       'is only called once': function(test) {
@@ -715,7 +717,7 @@ module.exports = function (request, config) {
           test.equal(currentLog.mocked, true);
           test.equal(currentLog.url, 'https://domain.example/666');
           test.equal(currentLog.method, 'GET');
-          test.equal(currentLog.headers, undefined);
+          test.deepEqual(currentLog.headers, superagentUserAgentHeader);
           test.done();
         });
       },
@@ -727,7 +729,7 @@ module.exports = function (request, config) {
           test.equal(currentLog.mocked, true);
           test.equal(currentLog.url, 'https://domain.example/666');
           test.equal(currentLog.method, 'PUT');
-          test.equal(currentLog.headers, undefined);
+          test.deepEqual(currentLog.headers, superagentUserAgentHeader);
           test.done();
         });
       },
@@ -739,7 +741,7 @@ module.exports = function (request, config) {
           test.equal(currentLog.mocked, true);
           test.equal(currentLog.url, 'https://domain.example/666');
           test.equal(currentLog.method, 'POST');
-          test.equal(currentLog.headers, undefined);
+          test.deepEqual(currentLog.headers, Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, superagentUserAgentHeader));
           test.done();
         });
       },
@@ -753,7 +755,7 @@ module.exports = function (request, config) {
             test.equal(currentLog.mocked, true);
             test.equal(currentLog.url, 'https://authorized.example/');
             test.equal(currentLog.method, 'PUT');
-            test.deepEqual(currentLog.headers, [{Authorization: 'valid_token'}, {'x-6play': 1}]);
+            test.deepEqual(currentLog.headers, Object.assign({Authorization: 'valid_token', "x-6play": 1}, superagentUserAgentHeader));
             test.done();
           });
       },
@@ -768,7 +770,7 @@ module.exports = function (request, config) {
             test.equal(currentLog.mocked, true);
             test.equal(currentLog.url, 'https://authorized.example/');
             test.equal(currentLog.method, 'PUT');
-            test.deepEqual(currentLog.headers, [{Authorization: 'valid_token'}, {'x-6play': 1}]);
+            test.deepEqual(currentLog.headers, Object.assign({Authorization: 'valid_token', "x-6play": 1}, superagentUserAgentHeader));
             test.done();
           });
       }

@@ -33,4 +33,4 @@ var config = require('./support/config');
 var expectations = require('./support/expectations');
 
 // Expose the test cases
-module.exports = expectations(request, config);
+module.exports = expectations(request, config, false);
