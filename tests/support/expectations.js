@@ -706,6 +706,22 @@ module.exports = function (request, config, isServer) {
         }, Error, 'Should throw internal exception');
         test.equal(calls, 1);
         test.done();
+      },
+      'not calling real api if not cancelled': function (test) {
+        request.put('https://match.toomuch.example/mock-call')
+          .end(function (err, result) {
+            test.ok(!err);
+            test.notEqual(result, 'Real call done');
+            test.done();
+          });
+      },
+      'calling real api when cancelled': function (test) {
+        request.put('https://match.toomuch.example/real-call')
+          .end(function (err, result) {
+            test.ok(!err);
+            test.equal(result, 'Real call done');
+            test.done();
+          });
       }
     },
     'Logger': {
