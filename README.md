@@ -50,8 +50,9 @@ module.exports = [
      * @param match array Result of the resolution of the regular expression
      * @param params object sent by 'send' function
      * @param headers object set by 'set' function
+     * @param context object the context of running the fixtures function
      */
-    fixtures: function (match, params, headers) {
+    fixtures: function (match, params, headers, context) {
       /**
        * Returning error codes example:
        *   request.get('https://domain.example/404').end(function(err, res){
@@ -92,6 +93,18 @@ module.exports = [
         } else {
           throw new Error(401); // Unauthorized
         }
+      }
+
+      /**
+       * Cancelling the mocking for a specific matched route example:
+       *   request.get('https://domain.example/server_test').end(function(err, res){
+       *     console.log(res.body); // (whatever the actual server would have returned)
+       *   })
+       */
+
+      if (match[1] === '/server_test') {
+        context.cancel = true; // This will cancel the mock process and continue as usual (unmocked)
+        return null;
       }
 
     },
