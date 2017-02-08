@@ -11,6 +11,8 @@ module.exports = function (request, config, isServer) {
   };
   var superagentPackage = require('superagent/package.json');
   var superagentUserAgentHeader = isServer ? {"User-Agent": 'node-superagent/' + superagentPackage.version} : {};
+  var originalSetTimeout = setTimeout;
+  var timePassed = 0;
 
   return {
 
@@ -29,6 +31,14 @@ module.exports = function (request, config, isServer) {
         return oldSet.call(this, field, value);
       };
 
+      // Stub setTimeout
+      Object.defineProperty(global, 'setTimeout', {
+        value: function(callbackFunc, timeout) {
+          timePassed = timeout;
+          callbackFunc();
+        }
+      });
+
       // Init module
       superagentMock = require('./../../lib/superagent-mock')(request, config, logger);
 
@@ -39,6 +49,9 @@ module.exports = function (request, config, isServer) {
       superagentMock.unset();
       headers = null;
       currentLog = null;
+      // restore setTimeout
+      Object.defineProperty(global, 'setTimeout', { value: originalSetTimeout });
+      timePassed = 0;
 
       go();
     },
@@ -708,7 +721,7 @@ module.exports = function (request, config, isServer) {
         test.done();
       },
       'not calling real api if not cancelled': function (test) {
-        request.put('https://match.toomuch.example/mock-call')
+        request.put('https://context.cancel.example/mock-call')
           .end(function (err, result) {
             test.ok(!err);
             test.notEqual(result, 'Real call done');
@@ -716,10 +729,18 @@ module.exports = function (request, config, isServer) {
           });
       },
       'calling real api when cancelled': function (test) {
-        request.put('https://match.toomuch.example/real-call')
+        request.put('https://context.cancel.example/real-call')
           .end(function (err, result) {
             test.ok(!err);
             test.equal(result, 'Real call done');
+            test.done();
+          });
+      },
+      'calling callback function after specified delay': function (test) {
+        request.put('https://context.delay.example/test')
+          .end(function (err, result) {
+            test.equal(result.data, 'test'); // just to see the arguments are passed as usual
+            test.equal(timePassed, 3000); // setTimeout has been called
             test.done();
           });
       }
