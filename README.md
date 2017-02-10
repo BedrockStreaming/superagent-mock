@@ -110,7 +110,7 @@ module.exports = [
       /**
        * Delaying the response with a specific number of milliseconds:
        *   request.get('https://domain.example/delay_test').end(function(err, res){
-       *     console.log(res.body); // This log will be written after the delay time have passed 
+       *     console.log(res.body); // This log will be written after the delay time has passed 
        *   })
        */
 
