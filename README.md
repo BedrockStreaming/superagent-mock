@@ -75,7 +75,7 @@ module.exports = [
         if(params['superhero']) {
           return 'Your hero:' + params['superhero'];
         } else {
-          return 'You didnt chose a hero';
+          return 'You didnt choose a hero';
         }
       }
 
@@ -107,6 +107,17 @@ module.exports = [
         return null;
       }
 
+      /**
+       * Delaying the response with a specific number of milliseconds:
+       *   request.get('https://domain.example/delay_test').end(function(err, res){
+       *     console.log(res.body); // This log will be written after the delay time has passed 
+       *   })
+       */
+
+      if (match[1] === '/delay_test') {
+        context.delay = 3000; // This will delay the response by 3 seconds
+        return 'zzZ';
+      }
     },
 
     /**

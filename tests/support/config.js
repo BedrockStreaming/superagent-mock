@@ -181,11 +181,27 @@ module.exports = [
     }
   },
   {
-    pattern: 'https://match.toomuch.example/([\\w-]+)',
+    pattern: 'https://context.cancel.example/([\\w-]+)',
     fixtures: function (match, data, headers, context) {
       if (match && match[1] === 'real-call') {
         context.cancel = true;
       }
+      return match && match[1];
+    },
+    get: function (match, data) {
+      return {match: match, data: data};
+    },
+    post: function (match, data) {
+      return {match: match, data: data};
+    },
+    put: function (match, data) {
+      return {match: match, data: data};
+    }
+  },
+  {
+    pattern: 'https://context.delay.example/([\\w-]+)',
+    fixtures: function (match, data, headers, context) {
+      context.delay = 3000;
       return match && match[1];
     },
     get: function (match, data) {

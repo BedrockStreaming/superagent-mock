@@ -2,10 +2,11 @@
   "name": "superagent",
   "scripts": [
     "../../node_modules/superagent/lib/client.js",
-    "../../node_modules/superagent/lib/is-object.js",
     "../../node_modules/superagent/lib/is-function.js",
+    "../../node_modules/superagent/lib/is-object.js",
     "../../node_modules/superagent/lib/request-base.js",
     "../../node_modules/superagent/lib/response-base.js",
+    "../../node_modules/superagent/lib/should-retry.js",
     "../../node_modules/superagent/lib/utils.js"
   ],
   "main": "../../node_modules/superagent/lib/client.js",
