@@ -121,9 +121,11 @@ module.exports = [
 
       /**
        * Mocking progress events:
-       *   request.get('https://domain.example/progress_test').end(function(err, res){
-       *     console.log(res.body); // This log will be written after all progress events emitted 
-       *   })
+       *   request.get('https://domain.example/progress_test')
+       *     .on('progress', function (e) { console.log(e.percent + '%'); })
+       *     .end(function(err, res){
+       *       console.log(res.body); // This log will be written after all progress events emitted 
+       *     })
        */
 
       if (match[1] === '/progress_test') {
