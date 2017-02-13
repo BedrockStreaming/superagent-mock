@@ -213,5 +213,21 @@ module.exports = [
     put: function (match, data) {
       return {match: match, data: data};
     }
+  },
+  {
+    pattern: 'https://context.progress.example/([\\w-]+)',
+    fixtures: function (match, data, headers, context) {
+      context.progress = { parts: parseInt(match[1]), delay: 1000 };
+      return match && match[1];
+    },
+    get: function (match, data) {
+      return {match: match, data: data};
+    },
+    post: function (match, data) {
+      return {match: match, data: data};
+    },
+    put: function (match, data) {
+      return {match: match, data: data};
+    }
   }
 ];
