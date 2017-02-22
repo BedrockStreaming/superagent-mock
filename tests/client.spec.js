@@ -15,17 +15,6 @@ var request = component('tests/support', function (loader) {
       return require('superagent/node_modules/component-emitter');
     }
   });
-
-  loader.register('component-reduce', function () {
-    try {
-      // npm >= 3
-      return require('reduce-component');
-    } catch (e) {
-      return require('superagent/node_modules/reduce-component');
-    }
-  });
-
-  loader.loadDependency('emitter');
 });
 
 // Get the mock config and expectations

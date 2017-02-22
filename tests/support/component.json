@@ -10,8 +10,7 @@
     "../../node_modules/superagent/lib/utils.js"
   ],
   "main": "../../node_modules/superagent/lib/client.js",
-  "dependencies": {
-    "component/emitter": "*",
-    "component/reduce": "*"
-  }
+  "local": [
+    "component-emitter"
+  ]
 }
