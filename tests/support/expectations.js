@@ -747,15 +747,16 @@ module.exports = function (request, config, isServer) {
       },
       'calling callback function after emitting progress events': function (test) {
         var parts = 3, currentPart = 1;
-        var r = request.put('https://context.progress.example/' + parts)
+        var currentRequest = request.put('https://context.progress.example/' + parts)
           .on('progress', function (e) {
             test.equal(e.total, 100);
             test.equal(e.loaded, (100 / parts) * currentPart++);
           });
         if (isServer) {
-          r = r.field('name','val'); // force creation of formData (the only case where progress is used on node)
+          // force creation of formData (the only case where progress is used on node)
+          currentRequest = currentRequest.field('name','val');
         }
-        r.end(function (err, result) {
+        currentRequest.end(function (err, result) {
           test.equal(result.data, parts); // just to see the arguments are passed as usual
           test.equal(setTimeout.calls.length, parts); // setTimeout has been called as the number of parts
           test.done();
