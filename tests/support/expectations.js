@@ -12,7 +12,6 @@ module.exports = function (request, config, isServer) {
   var superagentPackage = require('superagent/package.json');
   var superagentUserAgentHeader = isServer ? {"User-Agent": 'node-superagent/' + superagentPackage.version} : {};
   var originalSetTimeout = setTimeout;
-  var timePassed = 0;
 
   return {
 
@@ -34,7 +33,10 @@ module.exports = function (request, config, isServer) {
       // Stub setTimeout
       Object.defineProperty(global, 'setTimeout', {
         value: function(callbackFunc, timeout) {
-          timePassed = timeout;
+          if (!global.setTimeout.calls) {
+            global.setTimeout.calls = [];
+          }
+          global.setTimeout.calls.push([callbackFunc, timeout]); // spy on calls made to setTimeout
           callbackFunc();
         }
       });
@@ -51,7 +53,6 @@ module.exports = function (request, config, isServer) {
       currentLog = null;
       // restore setTimeout
       Object.defineProperty(global, 'setTimeout', { value: originalSetTimeout });
-      timePassed = 0;
 
       go();
     },
@@ -740,9 +741,27 @@ module.exports = function (request, config, isServer) {
         request.put('https://context.delay.example/test')
           .end(function (err, result) {
             test.equal(result.data, 'test'); // just to see the arguments are passed as usual
-            test.equal(timePassed, 3000); // setTimeout has been called
+            test.equal(setTimeout.calls.length, 1); // setTimeout has been called
             test.done();
           });
+      },
+      'calling callback function after emitting progress events': function (test) {
+        var parts = 3;
+        var currentPart = 1;
+        var currentRequest = request.put('https://context.progress.example/' + parts)
+          .on('progress', function (e) {
+            test.equal(e.total, 100);
+            test.equal(e.loaded, (100 / parts) * currentPart++);
+          });
+        if (isServer) {
+          // force creation of formData (the only case where progress is used on node)
+          currentRequest = currentRequest.field('name','val');
+        }
+        currentRequest.end(function (err, result) {
+          test.equal(result.data, parts); // just to see the arguments are passed as usual
+          test.equal(setTimeout.calls.length, parts); // setTimeout has been called as the number of parts
+          test.done();
+        });
       }
     },
     'Logger': {
