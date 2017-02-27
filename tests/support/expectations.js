@@ -746,7 +746,8 @@ module.exports = function (request, config, isServer) {
           });
       },
       'calling callback function after emitting progress events': function (test) {
-        var parts = 3, currentPart = 1;
+        var parts = 3;
+        var currentPart = 1;
         var currentRequest = request.put('https://context.progress.example/' + parts)
           .on('progress', function (e) {
             test.equal(e.total, 100);
