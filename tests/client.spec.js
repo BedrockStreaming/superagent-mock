@@ -3,11 +3,11 @@
 global.window = {};
 
 // Get the "client" version of superagent
-var request = require("superagent/lib/client.js");
+const request = require('superagent/lib/client');
 
 // Get the mock config and expectations
-var config = require('./support/config');
-var expectations = require('./support/expectations');
+const config = require('./support/config');
+const expectations = require('./support/expectations');
 
 // Expose the test cases
 module.exports = expectations(request, config, false);
