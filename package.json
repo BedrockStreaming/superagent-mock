@@ -19,11 +19,11 @@
   },
   "devDependencies": {
     "eslint": "0.12.0",
-    "nodeunit": "0.10.2",
-    "superagent": "^3.4.4"
+    "jest": "19.0.2",
+    "superagent": "3.4.4"
   },
   "scripts": {
-    "test": "nodeunit ./tests",
+    "test": "jest ./tests",
     "lint": "eslint ./lib"
   }
 }

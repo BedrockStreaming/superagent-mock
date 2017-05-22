@@ -93,8 +93,8 @@ module.exports = [
   {
     pattern: 'https://error.example/(\\w+)',
     fixtures: function (match) {
-      var code = (match || [])[1] || 404;
-      var newErr = new Error(parseInt(code));
+      var code = Number((match || [])[1]) || 404;
+      var newErr = new Error(Number(code));
       newErr.response = http.STATUS_CODES[code];
       newErr.status = code;
       throw newErr;
@@ -114,7 +114,7 @@ module.exports = [
     fixtures: function (match, params, headers) {
       var error = new Error( 422 );
       var code = (match || [])[1] || 422;
-      var newErr = new Error(parseInt(code));
+      var newErr = new Error(Number(code));
       newErr.response = http.STATUS_CODES[code];
       newErr.status = code;
       newErr.responseHeader = 'application/json';
@@ -217,7 +217,7 @@ module.exports = [
   {
     pattern: 'https://context.progress.example/([\\w-]+)',
     fixtures: function (match, data, headers, context) {
-      context.progress = { parts: parseInt(match[1]), delay: 1000 };
+      context.progress = { parts: Number(match[1]), delay: 1000 };
       return match && match[1];
     },
     get: function (match, data) {
