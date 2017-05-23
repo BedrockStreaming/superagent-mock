@@ -6,7 +6,6 @@
  */
 module.exports = function (superagent, config, logger) {
   const Request = superagent.Request;
-  let currentLog = {};
   const logEnabled = !!logger;
 
   /**
@@ -14,15 +13,6 @@ module.exports = function (superagent, config, logger) {
    */
   const oldEnd = Request.prototype.end;
   const oldAbort = Request.prototype.abort;
-
-  /**
-   * Flush the current log in the logger method and reset it
-   */
-  function flushLog() {
-    logger(currentLog);
-
-    currentLog = {};
-  }
 
   /**
    * Loop over the patterns and use @callback when the @query matches
@@ -86,6 +76,7 @@ module.exports = function (superagent, config, logger) {
     let path;
     const isNodeServer = this.hasOwnProperty('cookies');
     let response = {};
+    const warnings = [];
 
     if (isNodeServer) { // node server
       const originalPath = this.path;
@@ -106,30 +97,33 @@ module.exports = function (superagent, config, logger) {
       if (!parser) {
         parser = matched;
       } else if (logEnabled) {
-        currentLog.warnings = (currentLog.warnings || []).concat([
-          'This other pattern matches the query but was ignored: ' + matched.pattern
-        ]);
+        warnings.push(`The pattern ${matched.pattern} matches the query but another one matched first`);
       }
     });
 
-    // For warning purpose: attempt to match url against the patterns in fixtures
-    if (!parser && logEnabled) {
-      forEachPatternMatch(this.url, function (matched) {
-        currentLog.warnings = (currentLog.warnings || []).concat([
-          'This pattern was ignored because it doesn\'t matches the query params: ' + matched.pattern
-        ]);
-      });
-    }
-
+    // For warning purpose
     if (logEnabled) {
-      currentLog.matcher = parser && parser.pattern;
-      currentLog.mocked = !!parser;
-      currentLog.url = path;
-      currentLog.method = this.method;
-      currentLog.data = this._data;
-      currentLog.headers = this.header;
-      currentLog.timestamp = new Date().getTime();
-      flushLog();
+      if (parser) {
+        if (!parser[this.method.toLowerCase()]) {
+          warnings.push(`This pattern was ignored because it doesn't implement the method: ${this.method}`);
+        }
+      } else {
+        // attempt to match url against the patterns in fixtures
+        forEachPatternMatch(this.url, function (matched) {
+          warnings.push(`The pattern ${matched.pattern} was ignored because it doesn't matches the query params`);
+        });
+      }
+
+      logger({
+        matcher: parser && parser.pattern,
+        mocked: !!parser,
+        url: path,
+        method: this.method,
+        data: this._data,
+        headers: this.header,
+        timestamp: new Date().getTime(),
+        warnings
+      });
     }
 
     if (!parser) {

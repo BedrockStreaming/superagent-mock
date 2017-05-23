@@ -207,7 +207,7 @@ module.exports = function (request, config, isServer) {
       request.get(url)
         .end(function (err, result) {
           expect(result.data).toBe('foo');
-          expect(currentLog.warnings).toEqual(['This other pattern matches the query but was ignored: https://match.example/foo']);
+          expect(currentLog.warnings).toEqual(['The pattern https://match.example/foo matches the query but another one matched first']);
           done();
         });
     });
@@ -220,7 +220,7 @@ module.exports = function (request, config, isServer) {
           expect(!err).toBe(true);
           expect(result).toBe('Real call done');
           expect(currentLog.warnings).toEqual([
-            'This pattern was ignored because it doesn\'t matches the query params: https://forget.query.params$'
+            'The pattern https://forget.query.params$ was ignored because it doesn\'t matches the query params'
           ]);
           done();
         });
@@ -273,6 +273,14 @@ module.exports = function (request, config, isServer) {
       request.get('https://domain.example/666').abort();
 
       done();
+    });
+
+    it('should show a warning if the method is missing', function (done) {
+      request.get('https://validation.example')
+        .end(function (err, result) {
+          expect(currentLog.warnings).toEqual(['This pattern was ignored because it doesn\'t implement the method: GET']);
+          done();
+        });
     });
   });
 
@@ -416,7 +424,7 @@ module.exports = function (request, config, isServer) {
       request.post(url)
         .end(function (err, result) {
           expect(result.data).toBe('foo');
-          expect(currentLog.warnings).toEqual(['This other pattern matches the query but was ignored: https://match.example/foo']);
+          expect(currentLog.warnings).toEqual(['The pattern https://match.example/foo matches the query but another one matched first']);
           done();
         });
     });
@@ -429,7 +437,7 @@ module.exports = function (request, config, isServer) {
           expect(!err).toBe(true);
           expect(result).toBe('Real call done');
           expect(currentLog.warnings).toEqual([
-            'This pattern was ignored because it doesn\'t matches the query params: https://forget.query.params$'
+            'The pattern https://forget.query.params$ was ignored because it doesn\'t matches the query params'
           ]);
           done();
         });
@@ -636,7 +644,7 @@ module.exports = function (request, config, isServer) {
       request.put(url)
         .end(function (err, result) {
           expect(result.data).toBe('foo');
-          expect(currentLog.warnings).toEqual(['This other pattern matches the query but was ignored: https://match.example/foo']);
+          expect(currentLog.warnings).toEqual(['The pattern https://match.example/foo matches the query but another one matched first']);
           done();
         });
     });
@@ -649,7 +657,7 @@ module.exports = function (request, config, isServer) {
           expect(!err).toBe(true);
           expect(result).toBe('Real call done');
           expect(currentLog.warnings).toEqual([
-            'This pattern was ignored because it doesn\'t matches the query params: https://forget.query.params$'
+            'The pattern https://forget.query.params$ was ignored because it doesn\'t matches the query params'
           ]);
           done();
         });
