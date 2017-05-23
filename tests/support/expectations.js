@@ -40,7 +40,7 @@ module.exports = function (request, config, isServer) {
     });
 
     // Init module
-    superagentMock = require('./../../lib/superagent-mock')(request, config, logger);
+    superagentMock = require('./../../src/superagent-mock')(request, config, logger);
 
     go();
   });
