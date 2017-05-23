@@ -1,26 +1,19 @@
-'use strict';
-
-/**
- * Module exports.
- */
-module.exports = mock;
-
 /**
  * Installs the `mock` extension to superagent.
  * @param superagent Superagent instance
  * @param config The mock configuration
  * @param logger Logger callback
  */
-function mock (superagent, config, logger) {
-  var Request = superagent.Request;
-  var currentLog = {};
-  var logEnabled = !!logger;
+module.exports = function (superagent, config, logger) {
+  const Request = superagent.Request;
+  let currentLog = {};
+  const logEnabled = !!logger;
 
   /**
    * Keep the default methods
    */
-  var oldEnd = Request.prototype.end;
-  var oldAbort = Request.prototype.abort;
+  const oldEnd = Request.prototype.end;
+  const oldAbort = Request.prototype.abort;
 
   /**
    * Flush the current log in the logger method and reset it
@@ -34,11 +27,11 @@ function mock (superagent, config, logger) {
   /**
    * Loop over the patterns and use @callback when the @query matches
    */
-  var forEachPatternMatch = function () {
-    var configLength = config.length;
+  const forEachPatternMatch = function () {
+    const configLength = config.length;
 
     return function (query, callback){
-      for (var i = 0; i < configLength; i++) {
+      for (let i = 0; i < configLength; i++) {
         if (new RegExp(config[i].pattern, 'g').test(query)){
           callback(config[i]);
         }
@@ -89,26 +82,26 @@ function mock (superagent, config, logger) {
    * Override end function
    */
   Request.prototype.end = function (fn) {
-    var error = null;
-    var path;
-    var isNodeServer = this.hasOwnProperty('cookies');
-    var response = {};
+    let error = null;
+    let path;
+    const isNodeServer = this.hasOwnProperty('cookies');
+    let response = {};
 
     if (isNodeServer) { // node server
-      var originalPath = this.path;
+      const originalPath = this.path;
       this.path = this.url;
       this._appendQueryString(this); // use superagent implementation of adding the query
       path = this.path; // save the url together with the query
       this.path = originalPath; // reverse the addition of query to path by _appendQueryString
     } else { // client
-      var originalUrl = this.url;
+      const originalUrl = this.url;
       this._appendQueryString(this); // use superagent implementation of adding the query
       path = this.url; // save the url together with the query
       this.url = originalUrl; // reverse the addition of query to url by _appendQueryString
     }
 
     // Attempt to match path against the patterns in fixtures
-    var parser = null;
+    let parser = null;
     forEachPatternMatch(path, function (matched) {
       if (!parser) {
         parser = matched;
@@ -143,18 +136,18 @@ function mock (superagent, config, logger) {
       return oldEnd.call(this, fn);
     }
 
-    var match = new RegExp(parser.pattern, 'g').exec(path);
+    const match = new RegExp(parser.pattern, 'g').exec(path);
 
-    var context = {};
+    const context = {};
     try {
-      var fixtures = parser.fixtures(match, this._data, this.header, context);
+      const fixtures = parser.fixtures(match, this._data, this.header, context);
       if (context.cancel === true) {
         return oldEnd.call(this, fn); // mocking was cancelled from within fixtures
       }
-      var method = this.method.toLocaleLowerCase();
-      var parserMethod = parser[method] || parser.callback;
+      const method = this.method.toLocaleLowerCase();
+      const parserMethod = parser[method] || parser.callback;
       response = parserMethod(match, fixtures);
-    } catch(err) {
+    } catch (err) {
         error = err;
         response = new superagent.Response({
           res: {
@@ -219,4 +212,4 @@ function mock (superagent, config, logger) {
       Request.prototype.abort = oldAbort;
     }
   };
-}
+};

@@ -25,11 +25,9 @@ See [this post](http://tech.m6web.fr/how-did-we-mock-the-backend-developers.html
 
 ## Installation
 
-Install with [npm](http://npmjs.org/):
+Install with [npm](http://npmjs.org/): `npm install superagent-mock`
 
-```sh
-$ npm install superagent-mock
-```
+Install with [yarn](https://yarnpkg.com/): `yarn add superagent-mock`
 
 ## Usage
 
@@ -223,12 +221,13 @@ The callback function will be called with an object containing the following inf
  - timestamp : timestamp of the superagent call
  - mocked : true if the call was mocked by superagent mock, false if it used superagent real methods
 
-## Tests
+## Development scripts
 
-To run units tests: `npm test`.
+To run units tests: `yarn test`.
 
-To check code style: `npm run lint`.
+To check code style: `yarn lint`.
 
+To build code: `yarn build`.
 
 ## Credits
 
