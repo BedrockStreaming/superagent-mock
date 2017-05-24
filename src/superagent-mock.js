@@ -13,7 +13,6 @@ module.exports = function (superagent, config, logger) {
    * Keep the default methods
    */
   const oldEnd = Request.prototype.end;
-  const oldAbort = Request.prototype.abort;
 
   /**
    * Flush the current log in the logger method and reset it
@@ -200,16 +199,9 @@ module.exports = function (superagent, config, logger) {
     return this;
   };
 
-  Request.prototype.abort = function () {
-    this.xhr = this.req = {abort: function () {}};
-
-    return oldAbort.call(this);
-  };
-
   return {
     unset: function () {
       Request.prototype.end = oldEnd;
-      Request.prototype.abort = oldAbort;
     }
   };
 };
