@@ -278,7 +278,7 @@ module.exports = function (request, config, isServer) {
     it('should show a warning if the method is missing', function (done) {
       request.get('https://validation.example')
         .end(function (err, result) {
-          expect(currentLog.warnings).toEqual(['This pattern was ignored because it doesn\'t implement the method: GET']);
+          expect(currentLog.warnings).toEqual(['This pattern was ignored because it doesn\'t implement the method: get']);
           done();
         });
     });

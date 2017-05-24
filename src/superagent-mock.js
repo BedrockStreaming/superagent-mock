@@ -105,7 +105,7 @@ module.exports = function (superagent, config, logger) {
     if (logEnabled) {
       if (parser) {
         if (!parser[this.method.toLowerCase()]) {
-          warnings.push(`This pattern was ignored because it doesn't implement the method: ${this.method}`);
+          warnings.push(`This pattern was ignored because it doesn't implement the method: ${this.method.toLowerCase()}`);
         }
       } else {
         // attempt to match url against the patterns in fixtures
