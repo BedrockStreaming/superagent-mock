@@ -29,8 +29,8 @@
   },
   "scripts": {
     "clean": "rimraf lib es",
-    "test": "jest ./tests",
-    "lint": "eslint ./src ./tests",
+    "test": "jest tests",
+    "lint": "eslint src tests",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
     "build": "yarn build:commonjs && yarn build:es",
