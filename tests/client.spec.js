@@ -1,4 +1,7 @@
 'use strict';
+/**
+ * @jest-environment jsdom
+ */
 
 global.window = {};
 
