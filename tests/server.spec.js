@@ -1,4 +1,7 @@
 'use strict';
+/**
+ * @jest-environment node
+ */
 
 // Get the "server" version of superagent
 var request = require('superagent');
