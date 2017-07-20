@@ -139,11 +139,12 @@ module.exports = function (superagent, config, logger) {
 
     const context = {};
     try {
+      const method = this.method.toLocaleLowerCase();
+      context.method = method;
       const fixtures = parser.fixtures(match, this._data, this.header, context);
       if (context.cancel === true) {
         return oldEnd.call(this, fn); // mocking was cancelled from within fixtures
       }
-      const method = this.method.toLocaleLowerCase();
       const parserMethod = parser[method] || parser.callback;
       response = parserMethod(match, fixtures);
     } catch (err) {
