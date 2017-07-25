@@ -1,7 +1,7 @@
 {
   "name": "superagent-mock",
   "description": "superagent plugin allowing to simulate HTTP calls by returning data fixtures based on the requested URL.",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "keywords": [
     "superagent",
     "mock",
