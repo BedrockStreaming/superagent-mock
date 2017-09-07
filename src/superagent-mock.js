@@ -1,3 +1,5 @@
+var qs = require('qs');
+
 /**
  * Installs the `mock` extension to superagent.
  * @param superagent Superagent instance
@@ -89,6 +91,13 @@ module.exports = function (superagent, config, logger) {
     if (isNodeServer) { // node server
       const originalPath = this.path;
       this.path = this.url;
+
+      if (this.qs) {
+        var query = qs.stringify(this.qs, {indices: false, strictNullHandling: true});
+        query += ((query.length && this.qsRaw.length) ? '&' : '') + this.qsRaw.join('&');
+        this.path += query.length ? (~this.path.indexOf('?') ? '&' : '?') + query : '';
+      }
+
       this._finalizeQueryString(this); // use superagent implementation of adding the query
       path = this.path; // save the url together with the query
       this.path = originalPath; // reverse the addition of query to path by _finalizeQueryString
