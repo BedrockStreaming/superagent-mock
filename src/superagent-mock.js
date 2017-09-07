@@ -92,18 +92,29 @@ module.exports = function (superagent, config, logger) {
       const originalPath = this.path;
       this.path = this.url;
 
-      if (this.qs) {
-        var query = qs.stringify(this.qs, {indices: false, strictNullHandling: true});
-        query += ((query.length && this.qsRaw.length) ? '&' : '') + this.qsRaw.join('&');
-        this.path += query.length ? (~this.path.indexOf('?') ? '&' : '?') + query : '';
+      if (this._finalizeQueryString) {
+        if (this.qs) {
+          var query = qs.stringify(this.qs, {indices: false, strictNullHandling: true});
+          query += ((query.length && this.qsRaw.length) ? '&' : '') + this.qsRaw.join('&');
+          this.path += query.length ? (~this.path.indexOf('?') ? '&' : '?') + query : '';
+        }
+
+        this._finalizeQueryString(this); // use superagent implementation of adding the query
+      } else {
+        this._appendQueryString(this);
       }
 
-      this._finalizeQueryString(this); // use superagent implementation of adding the query
       path = this.path; // save the url together with the query
       this.path = originalPath; // reverse the addition of query to path by _finalizeQueryString
     } else { // client
       const originalUrl = this.url;
-      this._finalizeQueryString(this); // use superagent implementation of adding the query
+
+      if (this._finalizeQueryString) {
+        this._finalizeQueryString(this); // use superagent implementation of adding the query
+      } else {
+        this._appendQueryString(this);
+      }
+
       path = this.url; // save the url together with the query
       this.url = originalUrl; // reverse the addition of query to url by _finalizeQueryString
     }
