@@ -1,5 +1,3 @@
-var qs = require('qs');
-
 /**
  * Installs the `mock` extension to superagent.
  * @param superagent Superagent instance
