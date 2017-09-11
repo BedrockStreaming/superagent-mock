@@ -88,35 +88,28 @@ module.exports = function (superagent, config, logger) {
     const isNodeServer = this.hasOwnProperty('cookies');
     let response = {};
 
-    if (isNodeServer) { // node server
-      const originalPath = this.path;
-      this.path = this.url;
+    if (this._finalizeQueryString) {
+      // superagent 3.6+
 
-      if (this._finalizeQueryString) {
-        if (this.qs) {
-          var query = qs.stringify(this.qs, {indices: false, strictNullHandling: true});
-          query += ((query.length && this.qsRaw.length) ? '&' : '') + this.qsRaw.join('&');
-          this.path += query.length ? (~this.path.indexOf('?') ? '&' : '?') + query : '';
-        }
-
-        this._finalizeQueryString(this); // use superagent implementation of adding the query
-      } else {
-        this._appendQueryString(this);
-      }
-
-      path = this.path; // save the url together with the query
-      this.path = originalPath; // reverse the addition of query to path by _finalizeQueryString
-    } else { // client
       const originalUrl = this.url;
+      isNodeServer ? this.request() : this._finalizeQueryString(this);
+      path = this.url;
+      this.url = originalUrl;
+    } else {
+      // superagent < 3.6
 
-      if (this._finalizeQueryString) {
-        this._finalizeQueryString(this); // use superagent implementation of adding the query
-      } else {
-        this._appendQueryString(this);
+      if (isNodeServer) { // node server
+        const originalPath = this.path;
+        this.path = this.url;
+        this._appendQueryString(this); // use superagent implementation of adding the query
+        path = this.path; // save the url together with the query
+        this.path = originalPath; // reverse the addition of query to path by _appendQueryString
+      } else { // client
+        const originalUrl = this.url;
+        this._appendQueryString(this); // use superagent implementation of adding the query
+        path = this.url; // save the url together with the query
+        this.url = originalUrl; // reverse the addition of query to url by _appendQueryString
       }
-
-      path = this.url; // save the url together with the query
-      this.url = originalUrl; // reverse the addition of query to url by _finalizeQueryString
     }
 
     // Attempt to match path against the patterns in fixtures
