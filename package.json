@@ -1,7 +1,7 @@
 {
   "name": "superagent-mock",
   "description": "superagent plugin allowing to simulate HTTP calls by returning data fixtures based on the requested URL.",
-  "version": "3.6.0",
+  "version": "3.6.1",
   "keywords": [
     "superagent",
     "mock",
@@ -9,7 +9,8 @@
   ],
   "bugs": "https://github.com/M6Web/superagent-mock/issues",
   "license": "MIT",
-  "main": "./lib/superagent-mock.js",
+  "main": "lib/superagent-mock.js",
+  "module": "es/superagent-mock.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/M6Web/superagent-mock"
