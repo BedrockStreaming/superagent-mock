@@ -9,13 +9,13 @@ module.exports = [
       return 'Fixture !';
     },
     get: function (match, data) {
-      return {match: match, data: data, code: 200};
+      return {match: match, data: data, code: 200, status: 200};
     },
     post: function (match, data) {
-      return {match: match, data: data, code: 201};
+      return {match: match, data: data, code: 201, status: 201};
     },
     put: function (match, data) {
-      return {match: match, data: data, code: 201};
+      return {match: match, data: data, code: 201, status: 201};
     }
   },
   {

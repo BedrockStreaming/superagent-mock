@@ -168,7 +168,9 @@ module.exports = function (superagent, config, logger) {
             body: err.responseBody || {}
           },
           req: {
-            method: function (){}
+            method: function (){},
+            path: path,
+            url: path
           },
 
           xhr: {
@@ -179,9 +181,23 @@ module.exports = function (superagent, config, logger) {
           }
       });
       if (response._setStatusProperties) {
-        response._setStatusProperties(err.message);
+        // Error() forces its message to a string when a status must be a number
+        response._setStatusProperties(Number(err.message));
       } else {
-        response.setStatusProperties(err.message);
+        response.setStatusProperties(Number(err.message));
+      }
+    }
+
+    // Execute .ok() hook only if it exists and we have a status to check with
+    if (this._okCallback && response.status) {
+      try {
+        if (this._isResponseOK(response)) {
+          error = null;
+        } else {
+          error = new Error(response.statusText || 'Unsuccessful HTTP response');
+        }
+      } catch (custom_err) {
+        error = custom_err; // ok() callback can throw
       }
     }
 
