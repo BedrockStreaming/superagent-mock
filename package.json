@@ -29,12 +29,13 @@
     "superagent": "^3.6.0"
   },
   "scripts": {
+    "ci": "yarn clean && yarn lint && yarn build && yarn test",
     "clean": "rimraf lib es",
     "test": "jest tests",
     "lint": "eslint src tests",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
     "build": "yarn build:commonjs && yarn build:es",
-    "prepublish": "yarn run clean && yarn lint && yarn build"
+    "prepublishOnly": "yarn ci"
   }
 }

@@ -29,6 +29,11 @@ Install with [npm](http://npmjs.org/): `npm install superagent-mock`
 
 Install with [yarn](https://yarnpkg.com/): `yarn add superagent-mock`
 
+## Requirements
+
+node >= 6
+superagent >= ^3.6.0
+
 ## Usage
 
 First, you have to define the URLs to mock in a configuration file:
