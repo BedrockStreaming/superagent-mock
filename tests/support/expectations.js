@@ -718,6 +718,78 @@ module.exports = function (request, config, isServer) {
       done();
     });
 
+    it('called ok() callback', function (done) {
+      var okCalled = false;
+      request.get('https://domain.example/test')
+        .ok(function() {
+          okCalled = true;
+          return true;
+        })
+        .end(function(err, result){
+          expect(okCalled).toBe(true);
+          expect(!err).toBe(true);
+          expect(result.data).toBe('Fixture !');
+          done();
+        });
+    });
+
+    it('called ok() callback and handled a false return', function (done) {
+      var okCalled = false;
+      request.get('https://domain.example/test')
+        .ok(function() {
+          okCalled = true;
+          return false;
+        })
+        .end(function(err, result){
+          expect(okCalled).toBe(true);
+          expect(err).not.toBe(null);
+          expect(result.data).toBe('Fixture !');
+          done();
+        });
+    });
+
+    it('called ok() callback and handled an exception', function (done) {
+      var okCalled = false;
+      request.get('https://domain.example/test')
+        .ok(function() {
+          okCalled = true;
+          throw new Error('boom')
+        })
+        .end(function(err, result){
+          expect(okCalled).toBe(true);
+          expect(err).not.toBe(null);
+          expect(!result).toBe(false);
+          done();
+        });
+    });
+
+    it('did not call ok() callback without status', function (done) {
+      var okCalled = false;
+      request.get('https://callback.method.example')
+        .ok(function() {
+          okCalled = true;
+          return true;
+        })
+        .end(function(err, result){
+          expect(!err).toBe(true);
+          expect(okCalled).toBe(false);
+          expect(result.data).toBe('Fixture !');
+          done();
+        });
+    });
+
+    it('should not have an error when .ok() allows it', function (done) {
+      request.get('https://error.example/401')
+        .ok(function(res) {
+          return res.status === 401;
+        })
+        .end(function(err, result){
+          expect(!err).toBe(true);
+          expect(result).not.toBe(null);
+          done();
+        });
+    });
+
     it('is only called once', function (done) {
       var calls = 0;
       expect(function() {
