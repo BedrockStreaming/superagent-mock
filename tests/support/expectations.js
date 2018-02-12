@@ -73,7 +73,7 @@ module.exports = function (request, config, isServer) {
         expect(!err).toBe(true);
         expect(result.match[1]).toBe('666');
         expect(result.data).toBe('Fixture !');
-        expect(result.code).toBe(200);
+        expect(result.status).toBe(200);
         done();
       });
     });
@@ -282,7 +282,7 @@ module.exports = function (request, config, isServer) {
         expect(!err).toBe(true);
         expect(result.match[1]).toBe('666');
         expect(result.data).toBe('Fixture !');
-        expect(result.code).toBe(201);
+        expect(result.status).toBe(201);
         done();
       });
     });
@@ -502,7 +502,7 @@ module.exports = function (request, config, isServer) {
         expect(!err).toBe(true);
         expect(result.match[1]).toBe('666');
         expect(result.data).toBe('Fixture !');
-        expect(result.code).toBe(201);
+        expect(result.status).toBe(201);
         done();
       });
     });
