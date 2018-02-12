@@ -160,7 +160,7 @@ module.exports = [
      */
     post: function (match, data) {
       return {
-        code: 201
+        status: 201
       };
     }
   },
