@@ -1,5 +1,4 @@
 .*
 yarn.lock
 tests
-!es/
 !lib/
