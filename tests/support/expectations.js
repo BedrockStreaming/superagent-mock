@@ -1,6 +1,4 @@
-'use strict';
-
-var http = require('http');
+import http from 'http';
 
 module.exports = function (request, config, isServer) {
   var headers = null;
@@ -40,7 +38,7 @@ module.exports = function (request, config, isServer) {
     });
 
     // Init module
-    superagentMock = require('./../../src/superagent-mock')(request, config, logger);
+    superagentMock = require('./../../src/superagent-mock').default(request, config, logger);
 
     go();
   });

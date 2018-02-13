@@ -1,3 +1,25 @@
 {
-  "presets": ["env"]
+  "env": {
+    "test": {
+      "presets": [
+        ["env", {
+          "modules": "commonjs"
+        }]
+      ]
+    },
+    "commonjs": {
+      "presets": [
+        ["env", {
+          "modules": "commonjs"
+        }]
+      ]
+    },
+    "es": {
+      "presets": [
+        ["env", {
+          "modules": false
+        }]
+      ]
+    }
+  }
 }

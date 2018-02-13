@@ -4,7 +4,7 @@
  * @param config The mock configuration
  * @param logger Logger callback
  */
-module.exports = function (superagent, config, logger) {
+export default (superagent, config, logger) => {
   const Request = superagent.Request;
   let currentLog = {};
   const logEnabled = !!logger;
