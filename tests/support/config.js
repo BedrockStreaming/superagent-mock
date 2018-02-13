@@ -9,13 +9,13 @@ module.exports = [
       return 'Fixture !';
     },
     get: function (match, data) {
-      return {match: match, data: data, code: 200, status: 200};
+      return {match: match, data: data, status: 200};
     },
     post: function (match, data) {
-      return {match: match, data: data, code: 201, status: 201};
+      return {match: match, data: data, status: 201};
     },
     put: function (match, data) {
-      return {match: match, data: data, code: 201, status: 201};
+      return {match: match, data: data, status: 201};
     }
   },
   {
@@ -93,10 +93,10 @@ module.exports = [
   {
     pattern: 'https://error.example/(\\w+)',
     fixtures: function (match) {
-      var code = Number((match || [])[1]) || 404;
-      var newErr = new Error(Number(code));
-      newErr.response = http.STATUS_CODES[code];
-      newErr.status = code;
+      var status = Number((match || [])[1]) || 404;
+      var newErr = new Error(Number(status));
+      newErr.response = http.STATUS_CODES[status];
+      newErr.status = status;
       throw newErr;
     },
     get: function (match, data) {
@@ -113,10 +113,10 @@ module.exports = [
     pattern: 'https://validation.example',
     fixtures: function (match, params, headers) {
       var error = new Error( 422 );
-      var code = (match || [])[1] || 422;
-      var newErr = new Error(Number(code));
-      newErr.response = http.STATUS_CODES[code];
-      newErr.status = code;
+      var status = (match || [])[1] || 422;
+      var newErr = new Error(Number(status));
+      newErr.response = http.STATUS_CODES[status];
+      newErr.status = status;
       newErr.responseHeader = 'application/json';
       newErr.responseText = '{"password": "missing"}';
       newErr.responseBody = { password: 'missing' };
