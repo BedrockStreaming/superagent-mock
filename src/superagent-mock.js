@@ -139,10 +139,12 @@ module.exports = function (superagent, config, logger) {
       currentLog.data = this._data;
       currentLog.headers = this.header;
       currentLog.timestamp = new Date().getTime();
-      flushLog();
     }
 
     if (!parser) {
+      if (logEnabled) {
+        flushLog();
+      }
       return oldEnd.call(this, fn);
     }
 
@@ -154,7 +156,15 @@ module.exports = function (superagent, config, logger) {
       context.method = method;
       const fixtures = parser.fixtures(match, this._data, this.header, context);
       if (context.cancel === true) {
+        if (logEnabled) {
+          currentLog.mocked = false;
+          currentLog.cancelled = true;
+          flushLog();
+        }
         return oldEnd.call(this, fn); // mocking was cancelled from within fixtures
+      }
+      if (logEnabled) {
+        currentLog.fixtures = fixtures;
       }
       const parserMethod = parser[method] || parser.callback;
       response = parserMethod(match, fixtures);
@@ -200,7 +210,10 @@ module.exports = function (superagent, config, logger) {
         error = custom_err; // ok() callback can throw
       }
     }
-
+    if (logEnabled) {
+      currentLog.error = error;
+    }
+    
     // Check if a callback for progress events was specified as part of the request
     var progressEventsUsed = isNodeServer ? !!this._formData : this.hasListeners && this.hasListeners('progress');
 
@@ -214,14 +227,24 @@ module.exports = function (superagent, config, logger) {
         context.progress.delay = context.delay / context.progress.parts;
       }
       handleProgress(ProgressEvent, this, context.progress, context.progress.parts - 1, function () {
+        if (logEnabled) {
+          currentLog.progressEvent = true;
+          flushLog();
+        }
         fn(error, response);
       });
     } else if (context.delay) {
       setTimeout(function () {
+        if (logEnabled) {
+          flushLog();
+        }
         fn(error, response);
       }, context.delay);
     }
     else {
+      if (logEnabled) {
+        flushLog();
+      }
       fn(error, response);
     }
     return this;
