@@ -35,5 +35,9 @@
     "lint": "eslint src tests",
     "build": "cross-env babel src --out-dir lib",
     "prepublishOnly": "yarn ci"
+  },
+  "dependencies": {
+    "lodash": "^4.17.10",
+    "qs": "^6.5.2"
   }
 }

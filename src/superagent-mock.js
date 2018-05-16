@@ -1,3 +1,6 @@
+import qs from 'qs';
+import {isEmpty, isNil} from 'lodash';
+
 /**
  * Installs the `mock` extension to superagent.
  * @param superagent Superagent instance
@@ -77,6 +80,16 @@ module.exports = function (superagent, config, logger) {
     }, progress.delay || 0);
   };
 
+  var getData = function(methodName, data, url) {
+    if (methodName.toUpperCase() !== 'GET' || !isNil(data)) {
+      return data;
+    }
+
+    const parts = url.split('?');
+
+    return parts.length > 1 ? qs.parse(parts[1]) : undefined;
+  };
+
   /**
    * Override end function
    */
@@ -131,12 +144,14 @@ module.exports = function (superagent, config, logger) {
       });
     }
 
+    const match = parser && new RegExp(parser.pattern, 'g').exec(path);
+
     if (logEnabled) {
       currentLog.matcher = parser && parser.pattern;
       currentLog.mocked = !!parser;
       currentLog.url = path;
       currentLog.method = this.method;
-      currentLog.data = this._data;
+      currentLog.data = parser && getData(this.method, this._data, path);
       currentLog.headers = this.header;
       currentLog.timestamp = new Date().getTime();
     }
@@ -148,13 +163,12 @@ module.exports = function (superagent, config, logger) {
       return oldEnd.call(this, fn);
     }
 
-    const match = new RegExp(parser.pattern, 'g').exec(path);
-
     const context = {};
     try {
       const method = this.method.toLocaleLowerCase();
+      const data = getData(this.method, this._data, path);
       context.method = method;
-      const fixtures = parser.fixtures(match, this._data, this.header, context);
+      const fixtures = parser.fixtures(match, data, this.header, context);
       if (context.cancel === true) {
         if (logEnabled) {
           currentLog.mocked = false;
@@ -213,7 +227,7 @@ module.exports = function (superagent, config, logger) {
     if (logEnabled) {
       currentLog.error = error;
     }
-    
+
     // Check if a callback for progress events was specified as part of the request
     var progressEventsUsed = isNodeServer ? !!this._formData : this.hasListeners && this.hasListeners('progress');
 
