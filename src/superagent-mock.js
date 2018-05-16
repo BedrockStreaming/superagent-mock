@@ -1,3 +1,5 @@
+import {isPlainObject, defaults} from 'lodash';
+
 /**
  * Installs the `mock` extension to superagent.
  * @param superagent Superagent instance
@@ -24,15 +26,25 @@ module.exports = function (superagent, config, logger) {
   }
 
   /**
+   * Process default config
+   */
+  let flushedConfig;
+  if (isPlainObject(config)) {
+    flushedConfig = config.list.map(singleConf => defaults(singleConf, config.default || {}));
+  } else {
+    flushedConfig = config;
+  }
+
+  /**
    * Loop over the patterns and use @callback when the @query matches
    */
   const forEachPatternMatch = function () {
-    const configLength = config.length;
+    const configLength = flushedConfig.length;
 
     return function (query, callback){
       for (let i = 0; i < configLength; i++) {
-        if (new RegExp(config[i].pattern, 'g').test(query)){
-          callback(config[i]);
+        if (new RegExp(flushedConfig[i].pattern, 'g').test(query)){
+          callback(flushedConfig[i]);
         }
       }
     };
@@ -213,7 +225,7 @@ module.exports = function (superagent, config, logger) {
     if (logEnabled) {
       currentLog.error = error;
     }
-    
+
     // Check if a callback for progress events was specified as part of the request
     var progressEventsUsed = isNodeServer ? !!this._formData : this.hasListeners && this.hasListeners('progress');
 
