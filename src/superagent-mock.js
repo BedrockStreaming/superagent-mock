@@ -1,5 +1,4 @@
 import qs from 'qs';
-import {isEmpty, isNil} from 'lodash';
 
 /**
  * Installs the `mock` extension to superagent.
@@ -81,7 +80,7 @@ module.exports = function (superagent, config, logger) {
   };
 
   var getData = function(methodName, data, url) {
-    if (methodName.toUpperCase() !== 'GET' || !isNil(data)) {
+    if (methodName.toUpperCase() !== 'GET' || data !== undefined) {
       return data;
     }
 
