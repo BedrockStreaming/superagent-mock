@@ -4,6 +4,8 @@ node_js:
   - '7'
   - '8'
   - '9'
+  - '10'
+  - '12'
 script:
   - yarn add superagent@~3.6.0 && yarn ci
   - yarn add superagent@~3.7.0 && yarn ci
