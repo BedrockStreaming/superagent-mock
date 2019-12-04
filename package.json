@@ -19,13 +19,13 @@
     "superagent": "^3.6.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-jest": "^20.0.3",
-    "babel-preset-env": "^1.4.0",
-    "cross-env": "^5.0.0",
-    "eslint": "^3.19.0",
-    "jest": "20.0.3",
-    "rimraf": "^2.6.1",
+    "@babel/cli": "^7.7.4",
+    "@babel/preset-env": "7.7.4",
+    "core-js": "^3.4.7",
+    "cross-env": "^6.0.3",
+    "eslint": "^5.16.0",
+    "jest": "^24.9.0",
+    "rimraf": "^3.0.0",
     "superagent": "^3.6.0"
   },
   "scripts": {
