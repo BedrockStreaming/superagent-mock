@@ -8,4 +8,3 @@ script:
   - yarn add superagent@~3.7.0 && yarn ci
   - yarn add superagent@~3.8.0 && yarn ci
   - yarn add superagent@~4.1.0 && yarn ci
-  - yarn add superagent@~5.1.2 && yarn ci
