@@ -10,17 +10,11 @@ declare module 'superagent-mock' {
     | number[]
     | boolean
     | boolean[]
-    | ObjectLiteral
-    | ObjectLiteral[];
+    | {}
+    | Array<{}>;
 
-  interface ObjectLiteral {
-    [key: string]: AnyValue;
-    [key: number]: AnyValue;
-  }
-
-  export type RequestBody = ObjectLiteral;
-  export type Response = Fixture | ObjectLiteral;
   export type Fixture = AnyValue;
+  export type Response = Fixture;
 
   export interface Context {
     method: Method;
@@ -47,7 +41,7 @@ declare module 'superagent-mock' {
 
     fixtures(
       match: RegExpExecArray,
-      reqBody: RequestBody,
+      reqBody: {},
       headers: { [key: string]: string },
       context: Context
     ): Fixture | null | undefined;
@@ -58,7 +52,7 @@ declare module 'superagent-mock' {
     mocked: boolean;
     url: string;
     method: Method;
-    data: ObjectLiteral;
+    data: {};
     headers: { [key: string]: string };
     timestamp: number;
   }
