@@ -16,7 +16,7 @@
     "url": "https://github.com/M6Web/superagent-mock"
   },
   "peerDependencies": {
-    "superagent": "^3.6.0"
+    "superagent": ">=3.6.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.4",
