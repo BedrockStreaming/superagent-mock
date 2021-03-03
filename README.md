@@ -1,7 +1,10 @@
-![](https://img.shields.io/badge/License-MIT-00CCFF.svg?style=flat-square)
-![](https://img.shields.io/badge/superagent--mock-JS-FF0066.svg?style=flat-square)
-[![NPM Downloads](http://img.shields.io/npm/dm/superagent-mock.svg?style=flat-square)](https://www.npmjs.org/package/superagent-mock)
-[![Build Status](http://img.shields.io/travis/M6Web/superagent-mock.svg?style=flat-square)](https://travis-ci.org/M6Web/superagent-mock)
+![npm](https://img.shields.io/npm/v/superagent-mock)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/superagent-mock)
+![npm](https://img.shields.io/npm/dy/superagent-mock)
+![GitHub last commit](https://img.shields.io/github/last-commit/M6web/superagent-mock)
+![NPM](https://img.shields.io/npm/l/superagent-mock)
+[![NPM Downloads](http://img.shields.io/npm/dm/superagent-mock.svg)](https://www.npmjs.org/package/superagent-mock)
+[![Continous Integration](https://github.com/M6Web/superagent-mock/actions/workflows/node.js.yml/badge.svg)](https://github.com/M6Web/superagent-mock/actions/workflows/node.js.yml)
 
 <p align="center">
 <b><a href="#installation">Installation</a></b>
@@ -9,8 +12,6 @@
 <b><a href="#usage">Usage</a></b>
 |
 <b><a href="#supported-methods">Supported Methods</a></b>
-|
-<b><a href="#tests">Tests</a></b>
 |
 <b><a href="#credits">Credits</a></b>
 |
