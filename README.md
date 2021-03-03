@@ -31,7 +31,7 @@ Install with [yarn](https://yarnpkg.com/): `yarn add superagent-mock`
 
 ## Requirements
 
-node >= 6
+node >= 8.0
 superagent >= ^3.6.0
 
 ## Usage
