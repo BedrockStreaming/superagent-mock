@@ -22,7 +22,7 @@
 
 [superagent](https://github.com/visionmedia/superagent) plugin allowing to simulate HTTP calls by returning data fixtures based on the requested URL.
 
-See [this post](https://ech.bedrockstreaming.com//how-did-we-mock-the-backend-developers.html) to know why we use superagent-mock at Bedrock Streaming.
+See [this post](https://tech.bedrockstreaming.com//how-did-we-mock-the-backend-developers.html) to know why we use superagent-mock at Bedrock Streaming.
 
 ## Installation
 
