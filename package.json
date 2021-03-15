@@ -20,11 +20,11 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.7.4",
-    "@babel/preset-env": "7.7.4",
+    "@babel/preset-env": "^7.13.10",
     "core-js": "^3.4.7",
-    "cross-env": "^6.0.3",
-    "eslint": "^5.16.0",
-    "jest": "^24.9.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^7.22.0",
+    "jest": "^26.6.3",
     "rimraf": "^3.0.0",
     "superagent": "^3.6.0"
   },
