@@ -22,7 +22,7 @@
 
 [superagent](https://github.com/visionmedia/superagent) plugin allowing to simulate HTTP calls by returning data fixtures based on the requested URL.
 
-See [this post](http://tech.m6web.fr/how-did-we-mock-the-backend-developers.html) to know why we use superagent-mock at M6Web.
+See [this post](https://tech.bedrockstreaming.com//how-did-we-mock-the-backend-developers.html) to know why we use superagent-mock at Bedrock Streaming.
 
 ## Installation
 
@@ -237,8 +237,8 @@ To build code: `yarn build`.
 
 ## Credits
 
-Developped by the [Cytron Team](http://cytron.fr/) of [M6 Web](http://tech.m6web.fr/).
-Tested with [nodeunit](https://github.com/caolan/nodeunit).
+Developped by the Cytron Team of [Bedrock Streaming](https://tech.bedrockstreaming.com/).
+Tested with [Jest](https://jestjs.io/).
 
 ## License
 
