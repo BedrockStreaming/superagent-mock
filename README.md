@@ -190,6 +190,22 @@ var superagentMock = require('superagent-mock')(request, config);
 superagentMock.unset();
 ```
 
+### Default config
+It\`s possible to have a similar part of a config for all mocks. For example you may want always use `callback` as `(match, data) => data`. In this case you can use a default config syntax:
+
+```
+var defaultConfig = {
+  callback: (match, data) => data,
+};
+
+var superagentMock = require('superagent-mock')(request, {
+  list: config,
+  default: defaultConfig,
+});
+```
+
+It will use the default callback only if it abcent in a "list" config. 
+
 ## Supported methods
 
 All request methods are supported (get, put, post, etc.).
