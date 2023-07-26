@@ -1,97 +1,99 @@
-'use strict';
+"use strict";
 
-var http = require('http');
+var http = require("http");
 
 module.exports = [
   {
-    pattern: 'https://domain.example/(\\w+)',
+    pattern: "https://domain.example/(\\w+)",
     fixtures: function () {
-      return 'Fixture !';
+      return "Fixture !";
     },
     get: function (match, data) {
-      return {match: match, data: data, status: 200};
+      return { match: match, data: data, status: 200 };
     },
     post: function (match, data) {
-      return {match: match, data: data, status: 201};
+      return { match: match, data: data, status: 201 };
     },
     put: function (match, data) {
       return {match: match, data: data, status: 201};
-    },
+    }
   },
   {
-    pattern: 'https://domain.params.example/list(?:[?|&]((?:limit|offset)=[0-9]+))?(?:[?|&]((?:limit|offset)=[0-9]+))?',
+    pattern:
+      "https://domain.params.example/list(?:[?|&]((?:limit|offset)=[0-9]+))?(?:[?|&]((?:limit|offset)=[0-9]+))?",
     fixtures: function () {
-      return 'Fixture !';
+      return "Fixture !";
     },
     get: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     post: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     put: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://domain.strict-params.example/search\\?(q=\\w+)&(page=\\d+)',
+    pattern:
+      "https://domain.strict-params.example/search\\?(q=\\w+)&(page=\\d+)",
     fixtures: function () {
-      return 'Fixture !';
+      return "Fixture !";
     },
     get: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     post: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     put: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://forget.query.params$',
+    pattern: "https://forget.query.params$",
     fixtures: function () {
-      return 'Fixture !';
+      return "Fixture !";
     },
     get: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     post: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     put: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://match.example/(\\w+)',
+    pattern: "https://match.example/(\\w+)",
     fixtures: function (match) {
       return match && match[1];
     },
     get: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     post: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     put: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://match.example/foo',
+    pattern: "https://match.example/foo",
     get: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     post: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     put: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://error.example/(\\w+)',
+    pattern: "https://error.example/(\\w+)",
     fixtures: function (match) {
       var status = Number((match || [])[1]) || 404;
       var newErr = new Error(Number(status));
@@ -100,134 +102,134 @@ module.exports = [
       throw newErr;
     },
     get: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     post: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     put: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://validation.example',
+    pattern: "https://validation.example",
     fixtures: function (match, params, headers) {
       var error = new Error(422);
       var status = (match || [])[1] || 422;
       var newErr = new Error(Number(status));
       newErr.response = http.STATUS_CODES[status];
       newErr.status = status;
-      newErr.responseHeader = 'application/json';
+      newErr.responseHeader = "application/json";
       newErr.responseText = '{"password": "missing"}';
-      newErr.responseBody = {password: 'missing'};
+      newErr.responseBody = { password: 'missing' };
       throw newErr;
     },
     post: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://domain.send.example/(\\w+)',
+    pattern: "https://domain.send.example/(\\w+)",
     fixtures: function (match, params) {
-      return 'Fixture ! - superhero:' + params.superhero;
+      return "Fixture ! - superhero:" + params.superhero;
     },
     get: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     post: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     put: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://authorized.example',
+    pattern: "https://authorized.example",
     fixtures: function (match, params, headers) {
-      return 'your token: ' + headers['Authorization'];
+      return 'your token: ' + headers['Authorization']
     },
     get: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     post: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     put: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://multiple-headers.example',
+    pattern: "https://multiple-headers.example",
     fixtures: function (match, params, headers) {
-      return 'X-API-Key: ' + headers['X-API-Key'] + '; Content-Type: ' + headers['Content-Type'];
+      return 'X-API-Key: ' + headers['X-API-Key'] + '; Content-Type: ' + headers['Content-Type']
     },
     get: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     post: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     put: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://callback.method.example',
+    pattern: "https://callback.method.example",
     fixtures: function () {
-      return 'Fixture !';
+      return "Fixture !";
     },
     callback: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://context.cancel.example/([\\w-]+)',
+    pattern: "https://context.cancel.example/([\\w-]+)",
     fixtures: function (match, data, headers, context) {
-      if (match && match[1] === 'real-call') {
+      if (match && match[1] === "real-call") {
         context.cancel = true;
       }
       return match && match[1];
     },
     get: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     post: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     put: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://context.delay.example/([\\w-]+)',
+    pattern: "https://context.delay.example/([\\w-]+)",
     fixtures: function (match, data, headers, context) {
       context.delay = 3000;
       return match && match[1];
     },
     get: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     post: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     put: function (match, data) {
       return {match: match, data: data};
-    },
+    }
   },
   {
-    pattern: 'https://context.progress.example/([\\w-]+)',
+    pattern: "https://context.progress.example/([\\w-]+)",
     fixtures: function (match, data, headers, context) {
       context.progress = {parts: Number(match[1]), delay: 1000};
       return match && match[1];
     },
     get: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     post: function (match, data) {
-      return {match: match, data: data};
+      return { match: match, data: data };
     },
     put: function (match, data) {
       return {match: match, data: data};
-    },
-  },
+    }
+  }
 ];

@@ -60,7 +60,11 @@ module.exports = function (superagent, config, logger) {
       var lengthComputable = progress.lengthComputable !== false; // default is true
       var event = ProgressEvent.initProgressEvent
         ? ProgressEvent.initProgressEvent('', true, false, lengthComputable, loaded, total) // IE10+
-        : new ProgressEvent('', {lengthComputable: lengthComputable, loaded: loaded, total: total});
+        : new ProgressEvent('', {
+            lengthComputable: lengthComputable,
+            loaded: loaded,
+            total: total,
+          });
 
       if (event.total > 0) {
         event.percent = (event.loaded / event.total) * 100;
@@ -128,7 +132,7 @@ module.exports = function (superagent, config, logger) {
     if (!parser && logEnabled) {
       forEachPatternMatch(this.url, function (matched) {
         currentLog.warnings = (currentLog.warnings || []).concat([
-          'This pattern was ignored because it doesn\'t matches the query params: ' + matched.pattern,
+          "This pattern was ignored because it doesn't matches the query params: " + matched.pattern,
         ]);
       });
     }

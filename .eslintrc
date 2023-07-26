@@ -7,7 +7,7 @@
     "no-underscore-dangle": 0,
     "no-use-before-define": [2, "nofunc"],
     "max-len": [2, 150, 2],
-    "quotes": [2, "single"],
+    "quotes": [2, "single", "double"],
     "keyword-spacing": 2,
     "no-multi-str": 0
   },
