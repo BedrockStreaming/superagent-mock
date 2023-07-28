@@ -16,7 +16,7 @@
     "url": "https://github.com/M6Web/superagent-mock"
   },
   "engines": {
-    "node": ">=14"
+    "node": "^18.0.0"
   },
   "peerDependencies": {
     "superagent": ">=8.0.9"
