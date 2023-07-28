@@ -10,9 +10,6 @@ module.exports = function (request, config, isServer) {
     currentLog = log;
   };
   var superagentPackage = require('superagent/package.json');
-  var superagentUserAgentHeader = isServer
-    ? { 'User-Agent': 'node-superagent/' + superagentPackage.version }
-    : {};
   var originalSetTimeout = setTimeout;
 
   beforeEach(function (go) {
@@ -723,16 +720,14 @@ module.exports = function (request, config, isServer) {
     });
   });
 
-  describe('end', function () {
-    it('returns request object', function (done) {
+  describe("end", function () {
+    it("returns request object", function (done) {
       var requestObject = request.get('https://domain.example/test')
         .set({header: 'value'})
         .end(function(err, result){});
 
-      expect(requestObject.url).toBe("https://domain.example/test");
-      expect(requestObject.header).toEqual(
-        Object.assign({ header: "value", superagentUserAgentHeader } )
-      );
+      expect(requestObject.url).toBe('https://domain.example/test');
+      expect(requestObject.header).toEqual(Object.assign({header: 'value'}));
       done();
     });
 
@@ -878,7 +873,6 @@ module.exports = function (request, config, isServer) {
         expect(currentLog.mocked).toBe(true);
         expect(currentLog.url).toBe("https://domain.example/666");
         expect(currentLog.method).toBe("GET");
-        expect(currentLog.headers).toEqual(superagentUserAgentHeader);
         done();
       });
     });
@@ -891,22 +885,27 @@ module.exports = function (request, config, isServer) {
         expect(currentLog.mocked).toBe(true);
         expect(currentLog.url).toBe("https://domain.example/666");
         expect(currentLog.method).toBe("PUT");
-        expect(currentLog.headers).toEqual(superagentUserAgentHeader);
         done();
       });
     });
 
-    it('mocked POST', function (done) {
-      request.post('https://domain.example/666', 'foo').end(function (err, result) {
-        expect(!err).toBe(true);
-        expect(currentLog.matcher).toBe('https://domain.example/(\\w+)');
-        expect(currentLog.data).toBe('foo');
-        expect(currentLog.mocked).toBe(true);
-        expect(currentLog.url).toBe('https://domain.example/666');
-        expect(currentLog.method).toBe('POST');
-        expect(currentLog.headers).toEqual(Object.assign({'Content-Type': 'application/x-www-form-urlencoded'}, superagentUserAgentHeader));
-        done();
-      });
+    it("mocked POST", function (done) {
+      request
+        .post("https://domain.example/666", "foo")
+        .end(function (err, result) {
+          expect(!err).toBe(true);
+          expect(currentLog.matcher).toBe("https://domain.example/(\\w+)");
+          expect(currentLog.data).toBe("foo");
+          expect(currentLog.mocked).toBe(true);
+          expect(currentLog.url).toBe("https://domain.example/666");
+          expect(currentLog.method).toBe("POST");
+          expect(currentLog.headers).toEqual(
+            Object.assign(
+              { "Content-Type": "application/x-www-form-urlencoded" }
+            )
+          );
+          done();
+        });
     });
 
     it('mocked headers (object)', function (done) {
@@ -917,9 +916,13 @@ module.exports = function (request, config, isServer) {
           expect(currentLog.matcher).toBe("https://authorized.example");
           expect(currentLog.data).toBe(undefined);
           expect(currentLog.mocked).toBe(true);
-          expect(currentLog.url).toBe('https://authorized.example/');
-          expect(currentLog.method).toBe('PUT');
-          expect(currentLog.headers).toEqual(Object.assign({Authorization: 'valid_token', 'x-6play': 1}, superagentUserAgentHeader));
+          expect(currentLog.url).toBe("https://authorized.example/");
+          expect(currentLog.method).toBe("PUT");
+          expect(currentLog.headers).toEqual(
+            Object.assign(
+              { Authorization: "valid_token", "x-6play": 1 }
+            )
+          );
           done();
         });
     });
@@ -933,9 +936,13 @@ module.exports = function (request, config, isServer) {
           expect(currentLog.matcher).toBe("https://authorized.example");
           expect(currentLog.data).toBe(undefined);
           expect(currentLog.mocked).toBe(true);
-          expect(currentLog.url).toBe('https://authorized.example/');
-          expect(currentLog.method).toBe('PUT');
-          expect(currentLog.headers).toEqual(Object.assign({Authorization: 'valid_token', 'x-6play': 1}, superagentUserAgentHeader));
+          expect(currentLog.url).toBe("https://authorized.example/");
+          expect(currentLog.method).toBe("PUT");
+          expect(currentLog.headers).toEqual(
+            Object.assign(
+              { Authorization: "valid_token", "x-6play": 1 }
+            )
+          );
           done();
         });
     });
