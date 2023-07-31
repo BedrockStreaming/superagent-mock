@@ -132,7 +132,7 @@ module.exports = function (superagent, config, logger) {
     if (!parser && logEnabled) {
       forEachPatternMatch(this.url, function (matched) {
         currentLog.warnings = (currentLog.warnings || []).concat([
-          "This pattern was ignored because it doesn't matches the query params: " + matched.pattern,
+          'This pattern was ignored because it doesn\'t matches the query params: ' + matched.pattern,
         ]);
       });
     }
