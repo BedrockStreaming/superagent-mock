@@ -16,7 +16,7 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data, status: 201};
-    }
+    },
   },
   {
     pattern: 'https://domain.params.example/list(?:[?|&]((?:limit|offset)=[0-9]+))?(?:[?|&]((?:limit|offset)=[0-9]+))?',
@@ -31,7 +31,7 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://domain.strict-params.example/search\\?(q=\\w+)&(page=\\d+)',
@@ -46,7 +46,7 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://forget.query.params$',
@@ -61,7 +61,7 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://match.example/(\\w+)',
@@ -76,7 +76,7 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://match.example/foo',
@@ -88,7 +88,7 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://error.example/(\\w+)',
@@ -107,24 +107,24 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://validation.example',
     fixtures: function (match, params, headers) {
-      var error = new Error( 422 );
+      var error = new Error(422);
       var status = (match || [])[1] || 422;
       var newErr = new Error(Number(status));
       newErr.response = http.STATUS_CODES[status];
       newErr.status = status;
       newErr.responseHeader = 'application/json';
       newErr.responseText = '{"password": "missing"}';
-      newErr.responseBody = { password: 'missing' };
+      newErr.responseBody = {password: 'missing'};
       throw newErr;
     },
     post: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://domain.send.example/(\\w+)',
@@ -139,12 +139,12 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://authorized.example',
     fixtures: function (match, params, headers) {
-      return 'your token: ' + headers['Authorization']
+      return 'your token: ' + headers['Authorization'];
     },
     get: function (match, data) {
       return {match: match, data: data};
@@ -154,12 +154,12 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://multiple-headers.example',
     fixtures: function (match, params, headers) {
-      return 'X-API-Key: ' + headers['X-API-Key'] + '; Content-Type: ' + headers['Content-Type']
+      return 'X-API-Key: ' + headers['X-API-Key'] + '; Content-Type: ' + headers['Content-Type'];
     },
     get: function (match, data) {
       return {match: match, data: data};
@@ -169,7 +169,7 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://callback.method.example',
@@ -178,7 +178,7 @@ module.exports = [
     },
     callback: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://context.cancel.example/([\\w-]+)',
@@ -196,7 +196,7 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://context.delay.example/([\\w-]+)',
@@ -212,12 +212,12 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data};
-    }
+    },
   },
   {
     pattern: 'https://context.progress.example/([\\w-]+)',
     fixtures: function (match, data, headers, context) {
-      context.progress = { parts: Number(match[1]), delay: 1000 };
+      context.progress = {parts: Number(match[1]), delay: 1000};
       return match && match[1];
     },
     get: function (match, data) {
@@ -228,6 +228,6 @@ module.exports = [
     },
     put: function (match, data) {
       return {match: match, data: data};
-    }
-  }
+    },
+  },
 ];

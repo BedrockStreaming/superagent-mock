@@ -26,17 +26,17 @@ module.exports = function (superagent, config, logger) {
   /**
    * Loop over the patterns and use @callback when the @query matches
    */
-  const forEachPatternMatch = function () {
+  const forEachPatternMatch = (function () {
     const configLength = config.length;
 
-    return function (query, callback){
+    return function (query, callback) {
       for (let i = 0; i < configLength; i++) {
-        if (new RegExp(config[i].pattern, 'g').test(query)){
+        if (new RegExp(config[i].pattern, 'g').test(query)) {
           callback(config[i]);
         }
       }
     };
-  }();
+  })();
 
   /**
    * Chains progress events and eventually returns the response
@@ -56,14 +56,14 @@ module.exports = function (superagent, config, logger) {
   var handleProgress = function (ProgressEvent, request, progress, remainingParts, callback) {
     setTimeout(function () {
       var total = progress.total || 100;
-      var loaded = total * (progress.parts - remainingParts) / progress.parts;
+      var loaded = (total * (progress.parts - remainingParts)) / progress.parts;
       var lengthComputable = progress.lengthComputable !== false; // default is true
       var event = ProgressEvent.initProgressEvent
         ? ProgressEvent.initProgressEvent('', true, false, lengthComputable, loaded, total) // IE10+
         : new ProgressEvent('', {lengthComputable: lengthComputable, loaded: loaded, total: total});
 
       if (event.total > 0) {
-        event.percent = event.loaded / event.total * 100;
+        event.percent = (event.loaded / event.total) * 100;
       }
       event.direction = progress.direction || 'upload';
 
@@ -96,13 +96,15 @@ module.exports = function (superagent, config, logger) {
     } else {
       // superagent < 3.6
 
-      if (isNodeServer) { // node server
+      if (isNodeServer) {
+        // node server
         const originalPath = this.path;
         this.path = this.url;
         this._appendQueryString(this); // use superagent implementation of adding the query
         path = this.path; // save the url together with the query
         this.path = originalPath; // reverse the addition of query to path by _appendQueryString
-      } else { // client
+      } else {
+        // client
         const originalUrl = this.url;
         this._appendQueryString(this); // use superagent implementation of adding the query
         path = this.url; // save the url together with the query
@@ -117,7 +119,7 @@ module.exports = function (superagent, config, logger) {
         parser = matched;
       } else if (logEnabled) {
         currentLog.warnings = (currentLog.warnings || []).concat([
-          'This other pattern matches the query but was ignored: ' + matched.pattern
+          'This other pattern matches the query but was ignored: ' + matched.pattern,
         ]);
       }
     });
@@ -126,7 +128,7 @@ module.exports = function (superagent, config, logger) {
     if (!parser && logEnabled) {
       forEachPatternMatch(this.url, function (matched) {
         currentLog.warnings = (currentLog.warnings || []).concat([
-          'This pattern was ignored because it doesn\'t matches the query params: ' + matched.pattern
+          'This pattern was ignored because it doesn\'t matches the query params: ' + matched.pattern,
         ]);
       });
     }
@@ -169,26 +171,30 @@ module.exports = function (superagent, config, logger) {
       const parserMethod = parser[method] || parser.callback;
       response = parserMethod(match, fixtures);
     } catch (err) {
-        error = err;
-        response = new superagent.Response({
-          res: {
-            headers: {},
-            setEncoding: function (){},
-            on: function (){},
-            body: err.responseBody || {}
-          },
-          req: {
-            method: function (){},
-            path: path,
-            url: path
-          },
+      error = err;
+      response = new superagent.Response({
+        res: {
+          headers: {},
+          setEncoding: function () {},
+          on: function () {},
+          body: err.responseBody || {},
+        },
+        req: {
+          method: function () {},
+          path: path,
+          url: path,
+        },
 
-          xhr: {
-            responseType: '',
-            responseText: err.responseText || '',
-            getAllResponseHeaders: function () {return 'a header';},
-            getResponseHeader: function () {return err.responseHeader || 'a header';}
-          }
+        xhr: {
+          responseType: '',
+          responseText: err.responseText || '',
+          getAllResponseHeaders: function () {
+            return 'a header';
+          },
+          getResponseHeader: function () {
+            return err.responseHeader || 'a header';
+          },
+        },
       });
       if (response._setStatusProperties) {
         // Error() forces its message to a string when a status must be a number
@@ -213,15 +219,18 @@ module.exports = function (superagent, config, logger) {
     if (logEnabled) {
       currentLog.error = error;
     }
-    
+
     // Check if a callback for progress events was specified as part of the request
     var progressEventsUsed = isNodeServer ? !!this._formData : this.hasListeners && this.hasListeners('progress');
 
     if (context.progress && progressEventsUsed) {
-      var ProgressEvent = global.ProgressEvent || function (type, rest) { // polyfill
+      var ProgressEvent =
+        global.ProgressEvent ||
+        function (type, rest) {
+          // polyfill
           rest.type = type;
           return rest;
-      };
+        };
       // if no delay for parts was specified but an overall delay was, then divide the delay between the parts.
       if (!context.progress.delay && context.delay) {
         context.progress.delay = context.delay / context.progress.parts;
@@ -240,8 +249,7 @@ module.exports = function (superagent, config, logger) {
         }
         fn(error, response);
       }, context.delay);
-    }
-    else {
+    } else {
       if (logEnabled) {
         flushLog();
       }
@@ -253,6 +261,6 @@ module.exports = function (superagent, config, logger) {
   return {
     unset: function () {
       Request.prototype.end = oldEnd;
-    }
+    },
   };
 };
