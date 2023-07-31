@@ -21,7 +21,7 @@ module.exports = function (request, config, isServer) {
     var oldSet = request.Request.prototype.set;
     request.Request.prototype.set = function (field, value) {
       if (typeof field === 'object') {
-        // spy on set to collect the used arguments
+        // spy on set to collect the used arguments 
         headers = field;
       }
 

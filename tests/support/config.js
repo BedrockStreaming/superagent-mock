@@ -218,7 +218,6 @@ module.exports = [
     pattern: 'https://context.progress.example/([\\w-]+)',
     fixtures: function (match, data, headers, context) {
       context.progress = {parts: Number(match[1]), delay: 1000};
-      context.progress = {parts: Number(match[1]), delay: 1000};
       return match && match[1];
     },
     get: function (match, data) {
