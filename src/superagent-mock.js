@@ -5,7 +5,11 @@
  * @param logger Logger callback
  */
 module.exports = function (superagent, config, logger) {
-  const Request = superagent.Request;
+  const Request = superagent.Request ?? {
+    prototype: {
+      end: function() {}
+    }
+  };
   let currentLog = {};
   const logEnabled = !!logger;
 

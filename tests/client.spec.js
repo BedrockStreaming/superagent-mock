@@ -3,7 +3,7 @@
  * @jest-environment jsdom
  */
 
-global.window = {};
+global.window ??= {};
 
 // Get the "client" version of superagent
 const request = require('superagent/lib/client');
