@@ -11,6 +11,7 @@
   "license": "MIT",
   "main": "lib/superagent-mock.js",
   "module": "es/superagent-mock.js",
+  "types": "types/superagent-mock.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/M6Web/superagent-mock.git"
