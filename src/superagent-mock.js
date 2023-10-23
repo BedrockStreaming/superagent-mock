@@ -263,6 +263,12 @@ module.exports = function (superagent, config, logger) {
       }
       fn(error, response);
     }
+
+    // release resources
+    if (this.req) {
+      this.req.end();
+    }
+
     return this;
   };
 
