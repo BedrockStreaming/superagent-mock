@@ -49,6 +49,21 @@ module.exports = [
     },
   },
   {
+    pattern: 'https://decode.query.params',
+    fixtures: function (match, params) {
+      return params;
+    },
+    get: function (match, data) {
+      return {match: match, data: data};
+    },
+    post: function (match, data) {
+      return {match: match, data: data};
+    },
+    put: function (match, data) {
+      return {match: match, data: data};
+    }
+  },
+  {
     pattern: 'https://forget.query.params$',
     fixtures: function () {
       return 'Fixture !';

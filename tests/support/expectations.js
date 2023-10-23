@@ -219,6 +219,22 @@ module.exports = function (request, config, isServer) {
       });
     });
 
+    it('should pass params as `data`', function(done) {
+      var params = {
+        foo: 'bar',
+        baz: '123',
+        oof: ['foo', '42'],
+      };
+
+      request.get('https://decode.query.params')
+        .query(params)
+        .end(function(err, result) {
+          expect(result.data).toEqual(params);
+
+          done();
+        });
+    });
+
     it('attempt to match without query params', function (done) {
       var url = 'https://forget.query.params';
       request
